@@ -11,6 +11,6 @@ class Project extends Model
     protected $table = "projects";
 
     protected $fillable = [
-        'name', 'description', 'is_completed',
+        'name', 'description','starr_date', 'finish_date', 'gold', 'exp', 'is_completed',
     ];
 }
