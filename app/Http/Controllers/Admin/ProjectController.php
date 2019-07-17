@@ -89,7 +89,7 @@ class ProjectController extends Controller
     {
 
 
-        $project = Project::select('id', 'name', 'description')->findOrFail($id);
+        $project = Project::select('id', 'name', 'description','starr_date', 'finish_date', 'gold', 'exp', 'is_completed')->findOrFail($id);
 
         return view('admin.projects.edit', compact('project'));
     }
