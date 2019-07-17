@@ -15,6 +15,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return response()->redirectToAction('admin');
+        return redirect()->action('Admin\AdminController@index');
     }
 }
