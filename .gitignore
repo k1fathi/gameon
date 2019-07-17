@@ -3,8 +3,8 @@
 /public/storage
 /storage/*.key
 /vendor
-/.idea
-/.vscode
+.idea
+.vscode
 /.vagrant
 Homestead.json
 Homestead.yaml
