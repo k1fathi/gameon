@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateProject;
 use App\Project;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class ProjectController extends Controller
             $projects = Project::where('name', 'LIKE', "%$keyword%")
                 ->latest()->paginate($perPage);
         } else {
-            $projects = Project::latest()->paginate($perPage);
+            $projects = Project::orderBy('id', 'ASC')->paginate($perPage);
         }
 
         return view('admin.projects.index', compact('projects'));
@@ -46,15 +47,8 @@ class ProjectController extends Controller
      *
      * @return void
      */
-    public function store(Request $request)
+    public function store(CreateProject $request)
     {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required',
-                'description' => 'required|string',
-            ]
-        );
 
         $data = $request->all();
 
@@ -89,7 +83,7 @@ class ProjectController extends Controller
     {
 
 
-        $project = Project::select('id', 'name', 'description','starr_date', 'finish_date', 'gold', 'exp', 'is_completed')->findOrFail($id);
+        $project = Project::select('id', 'name', 'description','start_date', 'finish_date', 'gold', 'exp', 'is_completed')->findOrFail($id);
 
         return view('admin.projects.edit', compact('project'));
     }
@@ -102,15 +96,8 @@ class ProjectController extends Controller
      *
      * @return void
      */
-    public function update(Request $request, $id)
+    public function update(CreateProject $request, $id)
     {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required',
-                'description' => 'required|string'
-            ]
-        );
 
         $data = $request->all();
 
