@@ -38,7 +38,7 @@
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td><a href="{{ url('/admin/projects', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->description }}</td><td>{{ $item->start_date }}</td><td>{{ $item->finish_date }}</td><td>{{ $item->gold }}</td><td>{{ $item->exp }}</td></td><td>{{ $item->is_completed }}</td>
-                                        <td>
+                                        <td style="padding-right: 2px">
                                             <a href="{{ url('/admin/projects/' . $item->id) }}" title="View Project"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/admin/projects/' . $item->id . '/edit') }}" title="Edit Project"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                                             {!! Form::open([
