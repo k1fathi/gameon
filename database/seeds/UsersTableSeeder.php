@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
 
         \App\User::create([
             'email'    => 'admin@sarente.com',
-            'password' => 'password',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
             'name'     => 'Administrator',
         ]);
 
