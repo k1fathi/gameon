@@ -3,14 +3,29 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 
 class Project extends Model
 {
-    use Notifiable;
-    protected $table = "projects";
+    protected $table = 'projects';
 
     protected $fillable = [
-        'name', 'description','starr_date', 'finish_date', 'gold', 'exp', 'is_completed',
+        'name', 'description', 'start_date', 'finish_date', 'is_completed'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+        //->select(array('id','name', 'type','avatar'));
+    }
+
+    public function rosettes()
+    {
+        return $this->belongsToMany(Rosette::class);
+    }
+
+    public function avatars()
+    {
+        return $this->belongsToMany(Avatar::class);
+    }
 }
+
