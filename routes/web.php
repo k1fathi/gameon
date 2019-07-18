@@ -17,6 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/add', function () {
+    return view('deneme');
+});
+
+//deneme amaçlı konulmustur
+Route::post('adduser','Project\ProjectUserController@add_user');
+Route::post('assignrole','Project\ProjectUserController@assign_role');
 
 
 Route::middleware('auth')->group(function(){
