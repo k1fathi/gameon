@@ -103,12 +103,6 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $deviceId = $request->input('device_id');
-
-        Device::where('device_id', $deviceId)->update([
-            'user_id' => null
-        ]);
-
         return response()->message('auth.logout');
     }
 
