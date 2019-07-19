@@ -18,9 +18,11 @@ use Illuminate\Contracts\Auth\Guard;
 //use Laravel\Socialite\AbstractUser;
 //use Laravel\Socialite\Facades\Socialite;
 //use Laravel\Socialite\Two\GoogleProvider;
+use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer\Keychain;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Signer\Keychain; // just to make our life simpler
+use Lcobucci\JWT\Signer\Rsa\Sha256; // you can use Lcobucci\JWT\Signer\Ecdsa\Sha256 if you're using ECDSA keys
+
 use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
@@ -28,7 +30,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = new User($request->input());
-        $user->password = $request->input('password');
+        $user->password = Hash::make($request->input('password'));
         $user->save();
 
         $provider = $request->input('provider');
@@ -241,12 +243,15 @@ class AuthController extends Controller
 
     protected function respondWithToken($user)
     {
-        $token = (new Builder())
-            ->setIssuedAt(time())
-            ->setExpiration(time() + 365 * 24 * 60 * 60)
-            ->setSubject($user->id)
-            ->sign(new Sha256(), (new Keychain())->getPrivateKey(config('jwt.private'), config('jwt.passphrase')))
-            ->getToken();
+        $token = (new Builder())->setIssuer('http://sarente.com') // Configures the issuer (iss claim)
+        ->setAudience('http://sarente.com') // Configures the audience (aud claim)
+        ->setId('4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
+        ->setIssuedAt(time()) // Configures the time that the token was issued (iat claim)
+        ->setNotBefore(time() + 60) // Configures the time that the token can be used (nbf claim)
+        ->setExpiration(time() + 3600) // Configures the expiration time of the token (exp claim)
+        ->set('uid', 1) // Configures a new claim, called "uid"
+        ->getToken(); // Retrieves the generated token
+
 
         return response()->success([
             'token'  => $token->__toString(),
