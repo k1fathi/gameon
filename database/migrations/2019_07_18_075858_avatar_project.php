@@ -17,10 +17,10 @@ class AvatarProject extends Migration
             $table->timestamps();
 
             $table->bigInteger('project_id')->unsigned();
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('cascade');
 
             $table->bigInteger('avatar_id')->unsigned();
-            $table->foreign('avatar_id')->references('id')->on('avatars');
+            $table->foreign('avatar_id')->references('id')->on('avatars')->onUpdate('cascade')->onDelete('cascade');
 
         });
     }

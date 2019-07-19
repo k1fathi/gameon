@@ -18,10 +18,10 @@ class ProjectUserRole extends Migration
             $table->timestamps();
 
             $table->bigInteger('project_user_id')->unsigned();
-            $table->foreign('project_user_id')->references('id')->on('project_user');
+            $table->foreign('project_user_id')->references('id')->on('project_user')->onUpdate('cascade')->onDelete('cascade');
 
             $table->unsignedInteger('role_id');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('role_id')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
 
         });
     }
