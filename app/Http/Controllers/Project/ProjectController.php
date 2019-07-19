@@ -1,10 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateProject;
-use App\Project;
+use App\Models\Project;
+use App\Models\Rosette;
+use App\Models\Avatar;
+use App\Models\User;
+use App\Models\ProjectUser;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -47,15 +51,40 @@ class ProjectController extends Controller
      *
      * @return void
      */
-    public function store(CreateProject $request)
+    public function store(Request $request)
     {
+
+        //$user = User::find($request->user_id);
 
         $data = $request->all();
 
         $project = Project::create($data);
 
+//        if($user->hasRole('teacher'))
+//        {
+//            $rosettes = Rosette::find($request->rosette_ids);
+//            $project->rosettes()->saveMany($rosettes);
+//
+//            $avatars = Avatar::find($request->avatar_ids);
+//            $project->avatars()->saveMany($avatars);
+//
+//            $users = User::find($request->user_ids);
+//            $project->users()->saveMany($users);
+//
+//            foreach ($users as $user)
+//            {
+//                $project_user = ProjectUser::where(['user_id'=>$user->id,'project_id'=>$project->id])->first();
+//                $project_user->assignRole('member');
+//            }
+//
+//            $advisor = User::find($request->advisor_id);
+//            $project->users()->saveMany($advisor);
+//
+//            $project_user = ProjectUser::where(['user_id'=>$request->advisor_id,'project_id'=>$project->id])->first();
+//            $project_user->assignRole('advisor');
+//        }
 
-        return redirect('admin/projects')->with('flash_message', 'Project added!');
+        return response()->json(['name' => 'başarılı', 'state' => 'CA']);
     }
 
     /**

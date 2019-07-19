@@ -20,6 +20,8 @@ class CreateProjectsTable extends Migration
             $table->timestamp('start_date')->nullable();
             $table->timestamp('finish_date')->nullable();
             $table->Integer('quota');
+            $table->Integer('gold')->nullable();
+            $table->Integer('exp')->nullable();
             $table->Integer('is_completed')->default(0);
             $table->timestamps();
         });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +9,7 @@ class Project extends Model
     protected $table = 'projects';
 
     protected $fillable = [
-        'name', 'description', 'start_date', 'finish_date', 'is_completed'
+        'name', 'description', 'quota', 'start_date', 'finish_date', 'gold', 'exp', 'is_completed'
     ];
 
     public function users()
@@ -27,5 +27,6 @@ class Project extends Model
     {
         return $this->belongsToMany(Avatar::class);
     }
+
 }
 
