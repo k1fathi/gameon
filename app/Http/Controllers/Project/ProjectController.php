@@ -112,7 +112,7 @@ class ProjectController extends Controller
     {
 
 
-        $project = Project::select('id', 'name', 'description','start_date', 'finish_date', 'gold', 'exp', 'is_completed')->findOrFail($id);
+        $project = Project::select('id', 'name', 'description','starr_date', 'finish_date', 'gold', 'exp', 'is_completed')->findOrFail($id);
 
         return view('admin.projects.edit', compact('project'));
     }
@@ -125,8 +125,15 @@ class ProjectController extends Controller
      *
      * @return void
      */
-    public function update(CreateProject $request, $id)
+    public function update(Request $request, $id)
     {
+        $this->validate(
+            $request,
+            [
+                'name' => 'required',
+                'description' => 'required|string'
+            ]
+        );
 
         $data = $request->all();
 
