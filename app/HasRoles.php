@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-namespace App\Models\Role;
+use App\Models\Role;
 
 trait HasRoles
 {
