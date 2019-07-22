@@ -23,8 +23,28 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Auth::routes();
+
+Route::resource('roles', 'Admin\RolesController');
+Route::resource('permissions', 'Admin\PermissionsController');
+
+//Route::middleware('auth')->group(function(){
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('projects', 'Project\ProjectController');
+
+Route::resource('steps', 'Project\StepController');
+//});
+
+
 Route::group(['middleware' => 'auth'], function () {
+
     Route::post('test', function (Request $request) {
         return response()->message('common.success');
     });
+
 });
+
+
