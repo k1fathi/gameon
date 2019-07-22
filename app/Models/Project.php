@@ -15,9 +15,12 @@ class Project extends Model
         'name', 'description', 'quota', 'start_date', 'finish_date', 'gold', 'exp', 'is_completed'
     ];
 
-    public function users()
+    public function getMembers()
     {
-        return $this->belongsToMany(User::class,'project_user');
+        return [ 'students' => User::role(Setting::PROJECT_STUDENT . $this->id)->get(),
+                 'teachers' => User::role(Setting::PROJECT_TEACHER . $this->id)->get(),
+                 'leader'   => User::role(Setting::PROJECT_LEADER . $this->id)->get()
+        ];
     }
 
     public function rosettes()

@@ -52,7 +52,7 @@ class RolesController extends Controller
     {
         Role::create(['name' => $request->name]);
 
-        return response()->json(['name' => 'success', 'status' => '200']);
+        return response()->success('common.success');
     }
 
     /**

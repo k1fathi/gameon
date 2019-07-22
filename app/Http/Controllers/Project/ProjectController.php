@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -45,11 +46,9 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $project = Project::create($request->all());
+
         $user = User::find($request->user_id);
-
-        $data = $request->all();
-
-        $project = Project::create($data);
 
         if($user->hasRole('teacher'))
         {
@@ -59,35 +58,43 @@ class ProjectController extends Controller
             $avatars = Avatar::find($request->avatar_ids);
             $project->avatars()->saveMany($avatars);
 
-            $users = User::find($request->user_ids);
-            $project->users()->attach($users);
-
-            Role::create(['name'=>'student_project' . $project->id]);
-            Role::create(['name'=>'teacher_project' . $project->id]);
-            Role::create(['name'=>'leader_project' . $project->id]);
-
-            Permission::create(['name'=>'create_project' . $project->id]);
-            Permission::create(['name'=>'read_project' . $project->id]);
-            Permission::create(['name'=>'update_project' . $project->id]);
-            Permission::create(['name'=>'delete_project' . $project->id]);
+            $this->createRolesAndPermissions($project->id);
 
             $students = User::find($request->student_ids);
-
-            foreach ($students as $student)
-            {
-                $student->assignRole('student_project' . $project->id);
-            }
+            $this->studentSave($students, $project->id);
 
             $teachers = User::find($request->teacher_ids);
-
-            foreach ($teachers as $teacher)
-            {
-                $teacher->assignRole('teacher_project' . $project->id);
-            }
-
+            $this->teacherSave($teachers, $project->id);
         }
 
-        return response()->json(['name' => 'success', 'status' => '200']);
+        return response()->success('common.success');
+    }
+    
+    public function createRolesAndPermissions($project_id)
+    {
+        Role::create(['name'=>Setting::PROJECT_STUDENT . $project_id]);
+        Role::create(['name'=>Setting::PROJECT_TEACHER . $project_id]);
+        Role::create(['name'=>Setting::PROJECT_LEADER  . $project_id]);
+
+        Permission::create(['name'=>Setting::PROJECT_CREATE  . $project_id]);
+        Permission::create(['name'=>Setting::PROJECT_READ  . $project_id]);
+        Permission::create(['name'=>Setting::PROJECT_UPDATE  . $project_id]);
+        Permission::create(['name'=>Setting::PROJECT_DELETE  . $project_id]);
+    }
+    public function studentSave($students, $project_id)
+    {
+        foreach ($students as $student)
+        {
+            $student->assignRole(Setting::PROJECT_STUDENT . $project_id);
+        }
+    }
+
+    public function teacherSave($teachers, $project_id)
+    {
+        foreach ($teachers as $teacher)
+        {
+            $teacher->assignRole(Setting::PROJECT_TEACHER  . $project_id);
+        }
     }
 
     /**
