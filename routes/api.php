@@ -37,7 +37,7 @@ Route::resource('permissions', 'Admin\PermissionsController');
 
     Route::resource('steps', 'Project\StepController');
 
-    Route::resource('questions', 'QuestionController');
+    Route::resource('questions', 'Api\QuestionController');
 //});
 
 

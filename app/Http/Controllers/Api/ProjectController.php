@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Project;
+namespace App\Http\Controllers\Aoi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
