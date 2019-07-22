@@ -16,12 +16,12 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('finish_date')->nullable();
             $table->Integer('gold');
-            $table->Integer('exp');
-            $table->Integer('is_completed')->default(0);
+            $table->Integer('experience');
+            $table->boolean('is_completed');
             $table->timestamps();
         });
     }
