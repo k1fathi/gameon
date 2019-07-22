@@ -163,6 +163,6 @@ class ProjectController extends Controller
     {
         Project::destroy($id);
 
-        return response()->json(['name' => 'success', 'status' => '200']);
+        return response()->success('common.success');
     }
 }
