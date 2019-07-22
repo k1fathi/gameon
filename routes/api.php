@@ -23,7 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::post('test', function (Request $request) {
-    return response()->message('common.success');
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('test', function (Request $request) {
+        return response()->message('common.success');
+    });
 });
