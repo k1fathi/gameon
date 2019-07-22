@@ -33,4 +33,12 @@ class Setting extends Model
      * @var array
      */
     protected $fillable = ['key', 'value'];
+
+
+    //Default Roles of project
+    const PROJECT_CREATE       = 'project_create';
+    const PROJECT_READ       = 'project_read';
+    const PROJECT_UPDATE       = 'project_update';
+    const PROJECT_DELETE       = 'project_delete';
+
 }
