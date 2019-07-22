@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
-use App\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 
 class RolesController extends Controller
@@ -50,19 +50,9 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required']);
+        Role::create(['name' => $request->name]);
 
-        $role = Role::create($request->all());
-        $role->permissions()->detach();
-
-        if ($request->has('permissions')) {
-            foreach ($request->permissions as $permission_name) {
-                $permission = Permission::whereName($permission_name)->first();
-                $role->givePermissionTo($permission);
-            }
-        }
-
-        return redirect('admin/roles')->with('flash_message', 'Role added!');
+        return response()->success('common.success');
     }
 
     /**
