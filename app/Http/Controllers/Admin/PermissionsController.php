@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Permission;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class PermissionsController extends Controller
 {
@@ -47,11 +47,9 @@ class PermissionsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required']);
+        $permission = Permission::create(['name' => $request->name]);
 
-        Permission::create($request->all());
-
-        return redirect('admin/permissions')->with('flash_message', 'Permission added!');
+        return response()->json(['name' => 'success', 'status' => '200']);
     }
 
     /**

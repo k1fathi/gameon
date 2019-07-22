@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateProject;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use App\Models\Project;
 use App\Models\Rosette;
 use App\Models\Avatar;
 use App\Models\User;
-use App\Models\ProjectUser;
-use Illuminate\Http\Request;
+
 
 class ProjectController extends Controller
 {
@@ -20,17 +21,8 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $perPage = 15;
-
-        if (!empty($keyword)) {
-            $projects = Project::where('name', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
-        } else {
-            $projects = Project::orderBy('id', 'ASC')->paginate($perPage);
-        }
-
-        return view('admin.projects.index', compact('projects'));
+        $projects = Project::all();
+        return $projects;
     }
 
     /**
@@ -53,7 +45,6 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-
         $user = User::find($request->user_id);
 
         $data = $request->all();
@@ -69,26 +60,34 @@ class ProjectController extends Controller
             $project->avatars()->saveMany($avatars);
 
             $users = User::find($request->user_ids);
-            $project->users()->saveMany($users);
+            $project->users()->attach($users);
 
-            foreach ($users as $usr)
+            Role::create(['name'=>'student_project' . $project->id]);
+            Role::create(['name'=>'teacher_project' . $project->id]);
+            Role::create(['name'=>'leader_project' . $project->id]);
+
+            Permission::create(['name'=>'create_project' . $project->id]);
+            Permission::create(['name'=>'read_project' . $project->id]);
+            Permission::create(['name'=>'update_project' . $project->id]);
+            Permission::create(['name'=>'delete_project' . $project->id]);
+
+            $students = User::find($request->student_ids);
+
+            foreach ($students as $student)
             {
-                $project_user = ProjectUser::where(['user_id'=>$usr->id,'project_id'=>$project->id])->first();
-                $project_user->assignRole('member');
+                $student->assignRole('student_project' . $project->id);
             }
 
-            $advisors = User::find($request->advisor_ids);
-            $project->users()->saveMany($advisors);
+            $teachers = User::find($request->teacher_ids);
 
-            foreach ($advisors as $advisor)
+            foreach ($teachers as $teacher)
             {
-                $project_user = ProjectUser::where(['user_id'=>$advisor->id,'project_id'=>$project->id])->first();
-                $project_user->assignRole('advisor');
+                $teacher->assignRole('teacher_project' . $project->id);
             }
 
         }
 
-        return response()->json(['name' => 'başarılı', 'state' => 'CA']);
+        return response()->json(['name' => 'success', 'status' => '200']);
     }
 
     /**
@@ -100,9 +99,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        $project = Project::findOrFail($id);
-
-        return view('admin.projects.show', compact('project'));
+        return Project::where('id',$id)->with('advisors','members','rosettes','avatars')->get();
     }
 
     /**
@@ -159,6 +156,6 @@ class ProjectController extends Controller
     {
         Project::destroy($id);
 
-        return redirect('admin/projects')->with('flash_message', 'Project deleted!');
+        return response()->json(['name' => 'success', 'status' => '200']);
     }
 }

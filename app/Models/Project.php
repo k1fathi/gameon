@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 
 class Project extends Model
 {
+    use HasRoles;
+
     protected $table = 'projects';
 
     protected $fillable = [
@@ -14,8 +17,7 @@ class Project extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
-        //->select(array('id','name', 'type','avatar'));
+        return $this->belongsToMany(User::class,'project_user');
     }
 
     public function rosettes()
@@ -28,5 +30,9 @@ class Project extends Model
         return $this->belongsToMany(Avatar::class);
     }
 
+    public function steps()
+    {
+        return $this->hasMany(Step::class);
+    }
 }
 

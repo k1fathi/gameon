@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ProjectUser extends Migration
+class CreateStepsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class ProjectUser extends Migration
      */
     public function up()
     {
-        Schema::create('project_user', function (Blueprint $table) {
+        Schema::create('steps', function (Blueprint $table) {
             $table->timestamps();
 
             $table->bigInteger('project_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-
-            $table->bigInteger('user_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->string('role',100)->default('member');
-            $table->unique(['project_id', 'user_id']);
+            $table->Integer('ordinal');
+            $table->string('name',100);
+            $table->string('description',100);
+            $table->Integer('is_completed')->default(0);
         });
     }
 
@@ -34,6 +33,6 @@ class ProjectUser extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_user');
+        Schema::dropIfExists('steps');
     }
 }
