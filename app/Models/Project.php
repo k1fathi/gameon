@@ -12,14 +12,22 @@ class Project extends Model
     protected $table = 'projects';
 
     protected $fillable = [
-        'name', 'description', 'quota', 'start_date', 'finish_date', 'gold', 'exp', 'is_completed'
+        'name',
+        'description',
+        'quota',
+        'start_date',
+        'finish_date',
+        'gold',
+        'experience',
+        'is_completed'
     ];
 
     public function getMembers()
     {
-        return [ 'students' => User::role(Setting::PROJECT_STUDENT . $this->id)->get(),
-                 'teachers' => User::role(Setting::PROJECT_TEACHER . $this->id)->get(),
-                 'leader'   => User::role(Setting::PROJECT_LEADER . $this->id)->get()
+        return [
+            'students' => User::role(Setting::PROJECT_STUDENT . $this->id)->get(),
+            'teachers' => User::role(Setting::PROJECT_TEACHER . $this->id)->get(),
+            'leader' => User::role(Setting::PROJECT_LEADER . $this->id)->get()
         ];
     }
 
