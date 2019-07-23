@@ -9,12 +9,17 @@ class Role extends Model
 {
     use LogsActivity;
 
+    protected $guard_name='api';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'label'];
+    protected $fillable = [
+        'name',
+        'label',
+        'guard_name'
+    ];
 
     /**
      * A role may be given various permissions.

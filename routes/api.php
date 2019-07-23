@@ -41,6 +41,12 @@ Route::resource('permissions', 'Admin\PermissionsController');
 //});
 
 
-Route::post('test', function (Request $request) {
-    return response()->message('common.success');
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::post('test', function (Request $request) {
+        return response()->message('common.success');
+    });
+
 });
+
+

@@ -18,8 +18,14 @@ class CreateQuestionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('category');
             $table->string('question');
-            $table->bigInteger('teacher_id')->unsigned();
-            $table->foreign('teacher_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+
+            //This is user is a teacher
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
