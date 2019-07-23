@@ -33,11 +33,14 @@ Route::resource('permissions', 'Admin\PermissionsController');
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::resource('projects', 'Api\ProjectController');
+    Route::resource('projects', 'Api\ProjectController'); //projects store, index, destroy, show
 
-    Route::resource('steps', 'Api\StepController');
+    Route::resource('steps', 'Api\StepController');  //project step store, index
 
-    Route::resource('questions', 'Api\QuestionController');
+    Route::resource('questions', 'Api\QuestionController');  //soru store, index
+
+Route::post('giveAnswer', 'Api\QuestionController@giveAnswer');  //sorucevap, soru cevapla
+Route::get('getQuestion', 'Api\QuestionController@getQuestion'); //sorucevap, random soru al
 //});
 
 
