@@ -16,4 +16,9 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withPivot('is_correct');
+    }
 }
