@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Models\Project;
 use App\Models\Rosette;
 use App\Models\Avatar;
 use App\Models\User;
+
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 
 class ProjectController extends Controller

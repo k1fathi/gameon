@@ -9,7 +9,7 @@ class Question extends Model
     protected $table = 'questions';
 
     protected $fillable = [
-        'category','question','teacher_id'
+        'question','user_id'
     ];
 
     public function answers()
