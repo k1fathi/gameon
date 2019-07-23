@@ -60,8 +60,6 @@ class ProjectController extends Controller
             $avatars = Avatar::find($request->avatar_ids);
             $project->avatars()->saveMany($avatars);
 
-            $this->createRolesAndPermissions($project->id);
-
             $students = User::find($request->student_ids);
             $this->studentSave($students, $project->id);
 
@@ -71,18 +69,7 @@ class ProjectController extends Controller
 
         return response()->success('common.success');
     }
-    
-    public function createRolesAndPermissions($project_id)
-    {
-        Role::create(['name'=>Setting::PROJECT_STUDENT . ' ' . $project_id]);
-        Role::create(['name'=>Setting::PROJECT_TEACHER . ' ' . $project_id]);
-        Role::create(['name'=>Setting::PROJECT_LEADER  . ' ' . $project_id]);
 
-        Permission::create(['name'=>Setting::PROJECT_CREATE  . $project_id]);
-        Permission::create(['name'=>Setting::PROJECT_READ  . $project_id]);
-        Permission::create(['name'=>Setting::PROJECT_UPDATE  . $project_id]);
-        Permission::create(['name'=>Setting::PROJECT_DELETE  . $project_id]);
-    }
     public function studentSave($students, $project_id)
     {
         foreach ($students as $student)

@@ -45,5 +45,33 @@ class Project extends Model
     {
         return $this->hasMany(Step::class);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::created(function($model)
+        {
+            Role::create(['name'=>Setting::PROJECT_STUDENT . ' ' . $model->id]);
+            Role::create(['name'=>Setting::PROJECT_TEACHER . ' ' . $model->id]);
+            Role::create(['name'=>Setting::PROJECT_LEADER  . ' ' . $model->id]);
+
+            Permission::create(['name'=>Setting::PROJECT_CREATE  . ' ' . $model->id]);
+            Permission::create(['name'=>Setting::PROJECT_READ  . ' ' . $model->id]);
+            Permission::create(['name'=>Setting::PROJECT_UPDATE  . ' ' . $model->id]);
+            Permission::create(['name'=>Setting::PROJECT_DELETE  . ' ' . $model->id]);
+        });
+
+        static::deleting(function ($model)
+        {
+//            Role::where('name',Setting::PROJECT_STUDENT . ' ' . $model->id)->first()->delete();
+//            Role::where('name',Setting::PROJECT_TEACHER . ' ' . $model->id)->first()->delete();
+//            Role::where('name',Setting::PROJECT_LEADER  . ' ' . $model->id)->first()->delete();
+//
+//            Permission::where('name',Setting::PROJECT_CREATE  . ' ' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_READ  . ' ' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_UPDATE  . ' ' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_DELETE  . ' ' . $model->id)->first()->delete();
+        });
+    }
 }
 
