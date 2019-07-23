@@ -24,6 +24,8 @@ class ProjectController extends Controller
     {
         $projects = Project::all();
         return $projects;
+
+        return response()->success('common.success');
     }
 
     /**
@@ -72,9 +74,9 @@ class ProjectController extends Controller
     
     public function createRolesAndPermissions($project_id)
     {
-        Role::create(['name'=>Setting::PROJECT_STUDENT . $project_id]);
-        Role::create(['name'=>Setting::PROJECT_TEACHER . $project_id]);
-        Role::create(['name'=>Setting::PROJECT_LEADER  . $project_id]);
+        Role::create(['name'=>Setting::PROJECT_STUDENT . ' ' . $project_id]);
+        Role::create(['name'=>Setting::PROJECT_TEACHER . ' ' . $project_id]);
+        Role::create(['name'=>Setting::PROJECT_LEADER  . ' ' . $project_id]);
 
         Permission::create(['name'=>Setting::PROJECT_CREATE  . $project_id]);
         Permission::create(['name'=>Setting::PROJECT_READ  . $project_id]);
