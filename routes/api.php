@@ -29,14 +29,20 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::get('user', function (Request $request) {
         return $request->user();
     });
-    Route::post('test', function (Request $request) {
-        return response()->message('common.success');
-    });
+
+    //projects store, index, destroy, show
+    Route::resource('projects', 'Api\ProjectController');
+
+    //project step store, index
+    Route::resource('steps', 'Api\StepController');
+
+    //soru store, index
+    Route::resource('questions', 'Api\QuestionController');
+
+    //sorucevap, soru cevapla
+    Route::post('giveAnswer', 'Api\QuestionController@giveAnswer');
+
+    //sorucevap, random soru al
+    Route::get('getQuestion', 'Api\QuestionController@getQuestion');
+
 });
-
-
-
-
-Route::resource('roles', 'Admin\RolesController');
-Route::resource('permissions', 'Admin\PermissionsController');
-
