@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+//use App\Http\Middleware\JWTAuth;
 use App\Http\Requests\Api\ForgotRequest;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
@@ -11,17 +12,15 @@ use App\Models\Image;
 use App\Models\PasswordReset;
 use App\Models\Social;
 use App\Models\User;
-//use App\Socialite\GoogleIdProvider;
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
+
+//use App\Socialite\GoogleIdProvider;
 //use Intervention;
 //use Laravel\Socialite\AbstractUser;
 //use Laravel\Socialite\Facades\Socialite;
 //use Laravel\Socialite\Two\GoogleProvider;
-use Illuminate\Support\Facades\Hash;
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer\Keychain; // just to make our life simpler
-use Lcobucci\JWT\Signer\Rsa\Sha256; // you can use Lcobucci\JWT\Signer\Ecdsa\Sha256 if you're using ECDSA keys
 
 use Illuminate\Support\Facades\Log;
 
@@ -41,18 +40,18 @@ class AuthController extends Controller
                 /** @var \Laravel\Socialite\AbstractUser $socialUser */
                 if ($provider == 'facebook') {
                     $socialUser = Socialite::driver($provider)
-                                           ->scopes(['email', 'user_gender', 'user_birthday'])
-                                           ->fields(['name', 'email', 'birthday', 'verified'])
-                                           ->userFromToken($token);
-                } elseif ($provider == 'google') {
+                        ->scopes(['email', 'user_gender', 'user_birthday'])
+                        ->fields(['name', 'email', 'birthday', 'verified'])
+                        ->userFromToken($token);
+                } else if ($provider == 'google') {
                     /** @var GoogleProvider $socialite */
                     $socialUser = Socialite::driver($provider)
-                                           ->userFromToken($token);
+                        ->userFromToken($token);
 
-                } elseif ($provider == 'googleid') {
+                } else if ($provider == 'googleid') {
                     /** @var GoogleIdProvider $socialite */
                     $socialUser = Socialite::driver($provider)
-                                           ->userFromToken($token);
+                        ->userFromToken($token);
                     $provider = 'google';
                 } else {
                     throw new \Exception();
@@ -61,8 +60,8 @@ class AuthController extends Controller
 
                 // Attach social profile
                 $social = new Social([
-                    'provider'     => $provider,
-                    'provider_id'  => $socialUser->getId(),
+                    'provider' => $provider,
+                    'provider_id' => $socialUser->getId(),
                     'access_token' => $token,
                 ]);
                 $social->user()->associate($user);
@@ -90,7 +89,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request, Guard $auth)
     {
         $auth->once([
-            'email'    => $request->input('email'),
+            'email' => $request->input('email'),
             'password' => $request->input('password'),
         ]);
 
@@ -115,18 +114,18 @@ class AuthController extends Controller
             /** @var \Laravel\Socialite\AbstractUser $socialUser */
             if ($provider == 'facebook') {
                 $socialUser = Socialite::driver($provider)
-                                       ->scopes(['email', 'user_gender', 'user_birthday'])
-                                       ->fields(['name', 'email', 'birthday', 'verified'])
-                                       ->userFromToken($token);
-            } elseif ($provider == 'google') {
+                    ->scopes(['email', 'user_gender', 'user_birthday'])
+                    ->fields(['name', 'email', 'birthday', 'verified'])
+                    ->userFromToken($token);
+            } else if ($provider == 'google') {
                 /** @var GoogleProvider $socialite */
                 $socialUser = Socialite::driver($provider)
-                                      ->userFromToken($token);
+                    ->userFromToken($token);
 
-            } elseif ($provider == 'googleid') {
+            } else if ($provider == 'googleid') {
                 /** @var GoogleIdProvider $socialite */
                 $socialUser = Socialite::driver($provider)
-                                      ->userFromToken($token);
+                    ->userFromToken($token);
                 $provider = 'google';
             } else {
                 throw new \Exception();
@@ -134,7 +133,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             Log::error($e);
             return response()->json([
-                'code'    => 'auth.social.invalid',
+                'code' => 'auth.social.invalid',
                 'message' => trans('errors.auth.social.invalid'),
             ], 400);
         }
@@ -154,8 +153,8 @@ class AuthController extends Controller
         $user = User::where('email', $socialUser->getEmail())->first();
         if ($user) {
             $social = new Social([
-                'provider'     => $provider,
-                'provider_id'  => $socialUser->getId(),
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
                 'access_token' => $token,
             ]);
             $social->user()->associate($user);
@@ -174,12 +173,12 @@ class AuthController extends Controller
 
         if (!$email || !$name) {
             return response()->json([
-                'code'    => 'auth.social.missing',
+                'code' => 'auth.social.missing',
                 'message' => trans('errors.auth.social.missing'),
-                'user'    => [
-                    'token'    => $token,
-                    'email'    => $email,
-                    'name'     => $name,
+                'user' => [
+                    'token' => $token,
+                    'email' => $email,
+                    'name' => $name,
                     'birthday' => $birthday,
                 ],
             ], 400);
@@ -187,8 +186,8 @@ class AuthController extends Controller
 
         if (!$user) {
             $user = new User([
-                'email'    => $email,
-                'name'     => $name,
+                'email' => $email,
+                'name' => $name,
                 'birthday' => $birthday,
             ]);
             $user->save();
@@ -207,8 +206,8 @@ class AuthController extends Controller
         }
 
         $social = new Social([
-            'provider'     => $provider,
-            'provider_id'  => $socialUser->getId(),
+            'provider' => $provider,
+            'provider_id' => $socialUser->getId(),
             'access_token' => $token,
         ]);
         $social->user()->associate($user);
@@ -225,16 +224,16 @@ class AuthController extends Controller
         }
 
         $recentPasswordReset = PasswordReset::query()
-                                            ->where('user_id', $user->id)
-                                            ->where('created_at', '>', Carbon::now()->subMinutes(5))
-                                            ->first();
+            ->where('user_id', $user->id)
+            ->where('created_at', '>', Carbon::now()->subMinutes(5))
+            ->first();
 
         if ($recentPasswordReset) {
             return response()->error('auth.forgot.recent');
         }
 
         PasswordReset::create([
-            'email'   => $user->email,
+            'email' => $user->email,
             'user_id' => $user->id,
         ]);
 
@@ -243,18 +242,18 @@ class AuthController extends Controller
 
     protected function respondWithToken($user)
     {
-        $token = (new Builder())->setIssuer('http://sarente.com') // Configures the issuer (iss claim)
-        ->setAudience('http://sarente.com') // Configures the audience (aud claim)
-        ->setId('4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
-        ->setIssuedAt(time()) // Configures the time that the token was issued (iat claim)
-        ->setNotBefore(time() + 60) // Configures the time that the token can be used (nbf claim)
-        ->setExpiration(time() + 3600) // Configures the expiration time of the token (exp claim)
-        ->set('uid', 1) // Configures a new claim, called "uid"
-        ->getToken(); // Retrieves the generated token
+        $payload = auth()->factory()->claims([
+            'sub' => $user->id,
+            'iss' => config('app.name'),
+            'iat' => Carbon::now()->timestamp,
+            'nbf' => Carbon::now()->timestamp,
+            'jti' => uniqid(),
+        ])->make();
+        $token = auth()->manager()->encode($payload);
 
 
         return response()->success([
-            'token'  => $token->__toString(),
+            'token' => $token->__toString(),
             'locale' => $user->language,
         ]);
     }

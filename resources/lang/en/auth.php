@@ -13,6 +13,9 @@ return [
     |
     */
 
+
+    'token_invalid' => 'Token Invalid.',
+    'token_expired' => 'Token Expired.',
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'resetpassword' => [
