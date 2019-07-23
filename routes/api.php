@@ -33,9 +33,9 @@ Route::resource('permissions', 'Admin\PermissionsController');
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::resource('projects', 'Project\ProjectController');
+    Route::resource('projects', 'Api\ProjectController');
 
-    Route::resource('steps', 'Project\StepController');
+    Route::resource('steps', 'Api\StepController');
 
     Route::resource('questions', 'Api\QuestionController');
 //});
