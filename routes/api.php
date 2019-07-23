@@ -12,44 +12,37 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::resource('version', 'VersionController', ['only' => ['index']]);
-
-Route::post('auth/register', ['as' => 'auth.register', 'uses' => 'Api\AuthController@register']);
-Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'Api\AuthController@login']);
-Route::post('auth/forget', ['as' => 'auth.forgot', 'uses' => 'Api\AuthController@forgot']);
-Route::post('auth/social/{provider}', ['as' => 'auth.social', 'uses' => 'Api\AuthController@social']);
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
 Auth::routes();
 
-Route::resource('roles', 'Admin\RolesController');
-Route::resource('permissions', 'Admin\PermissionsController');
+Route::resource('version', 'VersionController', ['only' => ['index']]);
 
-//Route::middleware('auth')->group(function(){
-
-    Route::get('/home', 'HomeController@index')->name('home');
-
-    Route::resource('projects', 'Api\ProjectController'); //projects store, index, destroy, show
-
-    Route::resource('steps', 'Api\StepController');  //project step store, index
-
-    Route::resource('questions', 'Api\QuestionController');  //soru store, index
-
-Route::post('giveAnswer', 'Api\QuestionController@giveAnswer');  //sorucevap, soru cevapla
-Route::get('getQuestion', 'Api\QuestionController@getQuestion'); //sorucevap, random soru al
-//});
-
-
-Route::group(['middleware' => 'auth'], function () {
-
-    Route::post('test', function (Request $request) {
-        return response()->message('common.success');
-    });
-
+Route::group(['prefix' => 'auth'], function ($router) {
+    Route::post('register', ['as' => 'auth.register', 'uses' => 'Api\AuthController@register']);
+    Route::post('login', ['as' => 'auth.login', 'uses' => 'Api\AuthController@login']);
+    Route::post('forget', ['as' => 'auth.forgot', 'uses' => 'Api\AuthController@forgot']);
+    Route::post('social/{provider}', ['as' => 'auth.social', 'uses' => 'Api\AuthController@social']);
+    Route::middleware('auth:api')->post('logout', ['as' => 'auth.register', 'uses' => 'Api\AuthController@logout']);
 });
 
+Route::group(['middleware' => 'auth:api'], function ($router) {
 
+    Route::get('user', function (Request $request) {
+        return $request->user();
+    });
+
+    //projects store, index, destroy, show
+    Route::resource('projects', 'Api\ProjectController');
+
+    //project step store, index
+    Route::resource('steps', 'Api\StepController');
+
+    //soru store, index
+    Route::resource('questions', 'Api\QuestionController');
+
+    //sorucevap, soru cevapla
+    Route::post('giveAnswer', 'Api\QuestionController@giveAnswer');
+
+    //sorucevap, random soru al
+    Route::get('getQuestion', 'Api\QuestionController@getQuestion');
+
+});
