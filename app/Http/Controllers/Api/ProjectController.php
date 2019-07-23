@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Aoi;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -102,11 +102,19 @@ class ProjectController extends Controller
      *
      * @param  int  $id
      *
-     * @return void
+     * @return array
      */
     public function show($id)
     {
-        return Project::where('id',$id)->with('advisors','members','rosettes','avatars')->get();
+        $project = Project::find($id);
+
+        return [
+            "project" => $project,
+            "members" => $project->getMembers(),
+            "avatars" => $project->avatars()->get(),
+            "rosettes"=> $project->rosettes()->get(),
+            "steps" => $project->steps()->get()
+        ];
     }
 
     /**
