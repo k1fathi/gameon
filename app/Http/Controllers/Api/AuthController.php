@@ -242,14 +242,14 @@ class AuthController extends Controller
 
     protected function respondWithToken($user)
     {
-        $payload = auth()->factory()->claims([
+        $payload = auth('api')->factory()->claims([
             'sub' => $user->id,
             'iss' => config('app.name'),
             'iat' => Carbon::now()->timestamp,
             'nbf' => Carbon::now()->timestamp,
             'jti' => uniqid(),
         ])->make();
-        $token = auth()->manager()->encode($payload);
+        $token = auth('api')->manager()->encode($payload);
 
 
         return response()->success([
