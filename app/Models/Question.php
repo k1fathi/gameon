@@ -16,4 +16,9 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+    public function photo()
+    {
+        return $this->morphMany('App\Models\Photo', 'model');
+    }
 }
