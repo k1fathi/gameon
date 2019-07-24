@@ -25,14 +25,6 @@ return [
         'detach' => ':title2 removed from :title',
         'order'  => ':title order updated.',
     ],
-    'device'  => [
-        'registered' => 'Device is registered',
-    ],
-    'pepclubfan'  => [
-        'joinied-before' => 'This user joined before',
-        'joinied' => 'User joined to club',
-        'left' => 'User left the club',
-    ],
     'feed'=>[
         'valid'=>'Feed created for today',
     ],
