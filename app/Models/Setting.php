@@ -32,16 +32,15 @@ class Setting extends Model
 
 
     //Default Roles of project
-    const PROJECT_STUDENT = 'project_student_';
-    const PROJECT_TEACHER = 'project_teacher_';
-    const PROJECT_LEADER = 'project_leader_';
+    const PROJECT_STUDENT = 'project_student';
+    const PROJECT_TEACHER = 'project_teacher';
+    const PROJECT_LEADER = 'project_leader';
 
     //Default Permissions of project
-    const PROJECT_CREATE = 'project_create_';
-    const PROJECT_READ = 'project_read_';
-    const PROJECT_UPDATE = 'project_update_';
-    const PROJECT_DELETE = 'project_delete_';
-
+    const PROJECT_CREATE = 'project_create';
+    const PROJECT_READ = 'project_read';
+    const PROJECT_UPDATE = 'project_update';
+    const PROJECT_DELETE = 'project_delete';
 
     const ROLE_STUDENT = 'student';
     const ROLE_TEACHER = 'teacher';

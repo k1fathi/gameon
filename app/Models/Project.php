@@ -25,9 +25,9 @@ class Project extends Model
     public function getMembers()
     {
         return [
-            'students' => User::role(Setting::PROJECT_STUDENT . $this->id)->get(),
-            'teachers' => User::role(Setting::PROJECT_TEACHER . $this->id)->get(),
-            'leader' => User::role(Setting::PROJECT_LEADER . $this->id)->get()
+            'students' => User::role(Setting::PROJECT_STUDENT.'_'. $this->id)->get(),
+            'teachers' => User::role(Setting::PROJECT_TEACHER.'_'. $this->id)->get(),
+            'leader' => User::role(Setting::PROJECT_LEADER.'_'. $this->id)->get()
         ];
     }
 
@@ -51,26 +51,26 @@ class Project extends Model
         parent::boot();
         static::created(function($model)
         {
-            Role::create(['name'=>Setting::PROJECT_STUDENT . ' ' . $model->id]);
-            Role::create(['name'=>Setting::PROJECT_TEACHER . ' ' . $model->id]);
-            Role::create(['name'=>Setting::PROJECT_LEADER  . ' ' . $model->id]);
+            Role::create(['name'=>Setting::PROJECT_STUDENT . '_' . $model->id]);
+            Role::create(['name'=>Setting::PROJECT_TEACHER . '_' . $model->id]);
+            Role::create(['name'=>Setting::PROJECT_LEADER  . '_' . $model->id]);
 
-            Permission::create(['name'=>Setting::PROJECT_CREATE  . ' ' . $model->id]);
-            Permission::create(['name'=>Setting::PROJECT_READ  . ' ' . $model->id]);
-            Permission::create(['name'=>Setting::PROJECT_UPDATE  . ' ' . $model->id]);
-            Permission::create(['name'=>Setting::PROJECT_DELETE  . ' ' . $model->id]);
+            Permission::create(['name'=>Setting::PROJECT_CREATE  . '_' . $model->id]);
+            Permission::create(['name'=>Setting::PROJECT_READ  . '_' . $model->id]);
+            Permission::create(['name'=>Setting::PROJECT_UPDATE  . '_' . $model->id]);
+            Permission::create(['name'=>Setting::PROJECT_DELETE  . '_' . $model->id]);
         });
 
         static::deleting(function ($model)
         {
-//            Role::where('name',Setting::PROJECT_STUDENT . ' ' . $model->id)->first()->delete();
-//            Role::where('name',Setting::PROJECT_TEACHER . ' ' . $model->id)->first()->delete();
-//            Role::where('name',Setting::PROJECT_LEADER  . ' ' . $model->id)->first()->delete();
+//            Role::where('name',Setting::PROJECT_STUDENT . '_' . $model->id)->first()->delete();
+//            Role::where('name',Setting::PROJECT_TEACHER . '_' . $model->id)->first()->delete();
+//            Role::where('name',Setting::PROJECT_LEADER  . '_' . $model->id)->first()->delete();
 //
-//            Permission::where('name',Setting::PROJECT_CREATE  . ' ' . $model->id)->first()->delete();
-//            Permission::where('name',Setting::PROJECT_READ  . ' ' . $model->id)->first()->delete();
-//            Permission::where('name',Setting::PROJECT_UPDATE  . ' ' . $model->id)->first()->delete();
-//            Permission::where('name',Setting::PROJECT_DELETE  . ' ' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_CREATE  . '_' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_READ  . '_' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_UPDATE  . '_' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_DELETE  . '_' . $model->id)->first()->delete();
         });
     }
 }

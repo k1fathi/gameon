@@ -14,15 +14,20 @@ class CreateStepsTable extends Migration
     public function up()
     {
         Schema::create('steps', function (Blueprint $table) {
+            $table->increments('id');
+            $table->Integer('step_no');
+            $table->string('name');
+            $table->text('description');
+            $table->Integer('is_completed')->default(0);
             $table->timestamps();
 
             $table->bigInteger('project_id')->unsigned();
-            $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('project_id')
+                ->references('id')
+                ->on('projects')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
-            $table->Integer('ordinal');
-            $table->string('name',100);
-            $table->string('description',100);
-            $table->Integer('is_completed')->default(0);
         });
     }
 
