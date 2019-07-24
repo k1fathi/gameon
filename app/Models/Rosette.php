@@ -9,7 +9,9 @@ class Rosette extends Model
     protected $table = 'rosettes';
 
     protected $fillable = [
-        'name','description','path'
+        'name',
+        'description',
+        'path'
     ];
 
     public function owner()

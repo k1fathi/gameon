@@ -9,12 +9,18 @@ class Question extends Model
     protected $table = 'questions';
 
     protected $fillable = [
-        'question','user_id'
+        'question_text',
+        'user_id'
     ];
 
     public function answers()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     public function photo()

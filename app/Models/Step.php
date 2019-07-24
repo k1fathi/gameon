@@ -9,6 +9,9 @@ class Step extends Model
     protected $table = 'steps';
 
     protected $fillable = [
-        'ordinal','name','description','is_completed'
+        'ordinal',
+        'name',
+        'description',
+        'is_completed'
     ];
 }

@@ -9,7 +9,9 @@ class Avatar extends Model
     protected $table = 'avatars';
 
     protected $fillable = [
-        'name','description','path'
+        'name',
+        'description',
+        'path'
     ];
 
     public function owner()

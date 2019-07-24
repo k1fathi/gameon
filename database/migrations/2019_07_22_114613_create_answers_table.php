@@ -19,7 +19,7 @@ class CreateAnswersTable extends Migration
             $table->bigInteger('question_id')->unsigned();
             $table->foreign('question_id')->references('id')->on('questions')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->string('answer');
+            $table->string('answer_text');
             $table->boolean('correctness');
         });
     }

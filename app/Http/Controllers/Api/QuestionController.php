@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
+use App\Models\Photo;
 use App\Models\Question;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,7 +41,6 @@ class QuestionController extends Controller
         }
 
         return [
-            "photo" => $question->photo,
             "question" => $question,
             "answer" => $question->answers()->get()
         ];
