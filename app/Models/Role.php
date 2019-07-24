@@ -9,10 +9,8 @@ class Role extends Model
 {
     use LogsActivity;
 
-    protected $guard_name='api';
     /**
      * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -23,7 +21,6 @@ class Role extends Model
 
     /**
      * A role may be given various permissions.
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function permissions()
@@ -33,9 +30,7 @@ class Role extends Model
 
     /**
      * Grant the given permission to a role.
-     *
      * @param  Permission $permission
-     *
      * @return mixed
      */
     public function givePermissionTo(Permission $permission)
@@ -45,9 +40,7 @@ class Role extends Model
 
     /**
      * Change activity log event description
-     *
      * @param string $eventName
-     *
      * @return string
      */
     public function getDescriptionForEvent($eventName)
