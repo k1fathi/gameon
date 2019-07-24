@@ -37,13 +37,11 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::resource('step', 'Api\StepController');
 
     //Sorucevap, random soru al
-    Route::get('question/make', 'Api\QuestionController@getQuestion');
+    Route::get('question/get', 'Api\QuestionController@getQuestion');
     //Soru
     Route::resource('question', 'Api\QuestionController');
 
     //Sorucevap, soru cevapla
     Route::post('answer', 'Api\QuestionController@giveAnswer');
-
-
 
 });

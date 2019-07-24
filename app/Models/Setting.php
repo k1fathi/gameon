@@ -30,7 +30,6 @@ class Setting extends Model
      */
     protected $fillable = ['key', 'value'];
 
-
     //Default Roles of project
     const PROJECT_STUDENT = 'project_student';
     const PROJECT_TEACHER = 'project_teacher';
