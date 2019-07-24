@@ -21,7 +21,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', ['as' => 'auth.login', 'uses' => 'Api\AuthController@login']);
     Route::post('forget', ['as' => 'auth.forgot', 'uses' => 'Api\AuthController@forgot']);
     Route::post('social/{provider}', ['as' => 'auth.social', 'uses' => 'Api\AuthController@social']);
-    Route::middleware('auth:api')->post('logout', ['as' => 'auth.register', 'uses' => 'Api\AuthController@logout']);
+    Route::post('logout', ['as' => 'auth.logout', 'uses' => 'Api\AuthController@logout']);
 });
 
 Route::group(['middleware' => 'auth:api'], function ($router) {
@@ -30,19 +30,20 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
         return $request->user();
     });
 
-    //projects store, index, destroy, show
-    Route::resource('projects', 'Api\ProjectController');
+    //Projects store
+    Route::resource('project', 'Api\ProjectController');
 
-    //project step store, index
-    Route::resource('steps', 'Api\StepController');
+    //Project step store
+    Route::resource('step', 'Api\StepController');
 
-    //soru store, index
-    Route::resource('questions', 'Api\QuestionController');
+    //Sorucevap, random soru al
+    Route::get('question/make', 'Api\QuestionController@getQuestion');
+    //Soru
+    Route::resource('question', 'Api\QuestionController');
 
-    //sorucevap, soru cevapla
-    Route::post('giveAnswer', 'Api\QuestionController@giveAnswer');
+    //Sorucevap, soru cevapla
+    Route::post('answer', 'Api\QuestionController@giveAnswer');
 
-    //sorucevap, random soru al
-    Route::get('getQuestion', 'Api\QuestionController@getQuestion');
+
 
 });
