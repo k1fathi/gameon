@@ -3,26 +3,26 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Web\PermissionRequest;
 use Spatie\Permission\Models\Permission;
 
 class PermissionsController extends Controller
 {
+protected $perPage = 15;
     /**
      * Display a listing of the resource.
-     *
      * @return void
      */
-    public function index(Request $request)
+    public function index(PermissionRequest $PermissionRequest)
     {
-        $keyword = $request->get('search');
-        $perPage = 15;
+        $keyword = $PermissionRequest->get('search');
+        
 
         if (!empty($keyword)) {
             $permissions = Permission::where('name', 'LIKE', "%$keyword%")->orWhere('label', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
+                ->latest()->paginate($this->perPage);
         } else {
-            $permissions = Permission::latest()->paginate($perPage);
+            $permissions = Permission::latest()->paginate($this->perPage);
         }
 
         return view('admin.permissions.index', compact('permissions'));
@@ -30,7 +30,6 @@ class PermissionsController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
      * @return void
      */
     public function create()
@@ -40,23 +39,23 @@ class PermissionsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param \Illuminate\Http\PermissionRequest $PermissionRequest
      * @return void
      */
-    public function store(Request $request)
+    public function store(PermissionRequest $PermissionRequest)
     {
-        $permission = Permission::create(['name' => $request->name]);
+        $permission = Permission::firstOrNew(['name' => $PermissionRequest->name]);
 
-        return response()->success('common.success');
+        $permission->save();
+        
+        $permissions = Permission::latest()->paginate($this->perPage);
+
+        return view('admin.permissions.index', compact('permissions'));
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     *
+     * @param  int $id
      * @return void
      */
     public function show($id)
@@ -68,9 +67,7 @@ class PermissionsController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
+     * @param  int $id
      * @return void
      */
     public function edit($id)
@@ -82,27 +79,23 @@ class PermissionsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int  $id
-     *
+     * @param  \Illuminate\Http\PermissionRequest $PermissionRequest
+     * @param  int $id
      * @return void
      */
-    public function update(Request $request, $id)
+    public function update(PermissionRequest $PermissionRequest, $id)
     {
-        $this->validate($request, ['name' => 'required']);
+        $this->validate($PermissionRequest, ['name' => 'required']);
 
         $permission = Permission::findOrFail($id);
-        $permission->update($request->all());
+        $permission->update($PermissionRequest->all());
 
         return redirect('admin/permissions')->with('flash_message', 'Permission updated!');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     *
+     * @param  int $id
      * @return void
      */
     public function destroy($id)

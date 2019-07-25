@@ -50,14 +50,6 @@ return [
     'advice'           => [
         'text'          => 'Text',
         'category'      => 'Category',
-        'day_free'      => 'Free day',
-        'day_ovulation' => 'Ovulation day',
-        'day_period'    => 'Period day',
-        'day_pms'       => 'PMS day',
-        'fun'           => 'Fun',
-        'pregnancy_no'  => 'Pregnancy no',
-        'pregnancy_yes' => 'Pregnancy yes',
-        'pepart'        => 'Pepart',
     ],
     'category'         => [
         'name'      => 'Name',
@@ -147,6 +139,13 @@ return [
         'city' => 'Cities',
     ],
     'city'             => [
+        'name' => 'Name',
+    ],
+    'project'             => [
+        'name' => 'Name',
+        'description' => 'Description',
+    ],
+    'permission'             => [
         'name' => 'Name',
     ],
 ];

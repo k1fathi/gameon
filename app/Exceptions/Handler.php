@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Tymon\JWTAuth\Exceptions;
 
@@ -50,8 +49,6 @@ class Handler extends ExceptionHandler
             return response()->error('auth.token_expired', $exception->getStatusCode(), [], 401);
         } else if ($exception instanceof Exceptions\TokenInvalidException) {
             return response()->error('auth.token_invalid', $exception->getStatusCode(), [], 401);
-        } else if ($exception instanceof ModelNotFoundException) {
-            return response()->error('common.not-found', $exception->getStatusCode(), [], 404);
         }
 
         return parent::render($request, $exception);
@@ -65,9 +62,11 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if (in_array('admin', $exception->guards())) {
-            return redirect()->route('admin.login');
+        if (in_array('web', $exception->guards())) {
+            return redirect()->route('login');
         }
-        return response()->error('auth.unauthenticated', [], [], 401);
+        elseif(in_array('api', $exception->guards())){
+            return response()->error('auth.unauthenticated', [], [], 401);
+        }
     }
 }

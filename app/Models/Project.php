@@ -49,6 +49,7 @@ class Project extends Model
     public static function boot()
     {
         parent::boot();
+
         static::created(function ($model) {
             Role::create(['name' => Setting::PROJECT_STUDENT . '_' . $model->id]);
             Role::create(['name' => Setting::PROJECT_TEACHER . '_' . $model->id]);

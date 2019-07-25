@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateProject;
+use App\Http\Requests\Web\ProjectRequest;
 use App\Models\Project;
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -14,7 +13,7 @@ class ProjectController extends Controller
      *
      * @return void
      */
-    public function index(Request $request)
+    public function index(ProjectRequest $request)
     {
         $keyword = $request->get('search');
         $perPage = 15;
@@ -47,7 +46,7 @@ class ProjectController extends Controller
      *
      * @return void
      */
-    public function store(CreateProject $request)
+    public function store(ProjectRequest $request)
     {
 
         $data = $request->all();
@@ -96,7 +95,7 @@ class ProjectController extends Controller
      *
      * @return void
      */
-    public function update(CreateProject $request, $id)
+    public function update(ProjectRequest $request, $id)
     {
 
         $data = $request->all();
