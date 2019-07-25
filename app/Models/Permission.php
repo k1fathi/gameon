@@ -16,7 +16,6 @@ class Permission extends Model
      */
     protected $fillable = [
         'name',
-        'label'
     ];
 
     /**
@@ -39,14 +38,5 @@ class Permission extends Model
     public function getDescriptionForEvent($eventName)
     {
         return __CLASS__ . " model has been {$eventName}";
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-
-        parent::saving(function (self $model) {
-            $model->label=$model->name;
-        });
     }
 }

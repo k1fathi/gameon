@@ -33,7 +33,5 @@ Route::middleware('auth:web')->group(function(){
         'index', 'show', 'destroy'
     ]);
     Route::resource('admin/settings', 'Admin\SettingsController');
-    Route::get('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
-    Route::post('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
 });
 

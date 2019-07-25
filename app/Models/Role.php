@@ -15,7 +15,6 @@ class Role extends Model
      */
     protected $fillable = [
         'name',
-        'label',
         'guard_name'
     ];
 
@@ -48,12 +47,12 @@ class Role extends Model
         return __CLASS__ . " model has been {$eventName}";
     }
 
-    public static function boot()
+   public static function boot()
     {
         parent::boot();
 
         parent::saving(function (self $model) {
-            $model->label=$model->name;
+            $model->guard_name=ucwords(Setting::SARENTE);
         });
     }
 }

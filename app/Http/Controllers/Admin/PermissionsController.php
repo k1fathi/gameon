@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\Request;
 use App\Http\Requests\Web\PermissionRequest;
 use Spatie\Permission\Models\Permission;
 
@@ -13,9 +14,9 @@ protected $perPage = 15;
      * Display a listing of the resource.
      * @return void
      */
-    public function index(PermissionRequest $PermissionRequest)
+    public function index(Request $Request)
     {
-        $keyword = $PermissionRequest->get('search');
+        $keyword = $Request->get('search');
         
 
         if (!empty($keyword)) {
@@ -39,12 +40,12 @@ protected $perPage = 15;
 
     /**
      * Store a newly created resource in storage.
-     * @param \Illuminate\Http\PermissionRequest $PermissionRequest
+     * @param \Illuminate\Http\Request $Request
      * @return void
      */
-    public function store(PermissionRequest $PermissionRequest)
+    public function store(Request $Request)
     {
-        $permission = Permission::firstOrNew(['name' => $PermissionRequest->name]);
+        $permission = Permission::firstOrNew(['name' => $Request->name]);
 
         $permission->save();
         
@@ -79,16 +80,16 @@ protected $perPage = 15;
 
     /**
      * Update the specified resource in storage.
-     * @param  \Illuminate\Http\PermissionRequest $PermissionRequest
+     * @param  \Illuminate\Http\Request $Request
      * @param  int $id
      * @return void
      */
-    public function update(PermissionRequest $PermissionRequest, $id)
+    public function update(Request $Request, $id)
     {
-        $this->validate($PermissionRequest, ['name' => 'required']);
+        $this->validate($Request, ['name' => 'required']);
 
         $permission = Permission::findOrFail($id);
-        $permission->update($PermissionRequest->all());
+        $permission->update($Request->all());
 
         return redirect('admin/permissions')->with('flash_message', 'Permission updated!');
     }

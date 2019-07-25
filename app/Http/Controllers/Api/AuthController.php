@@ -10,6 +10,7 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Requests\Api\Request;
 use App\Models\Image;
 use App\Models\PasswordReset;
+use App\Models\Setting;
 use App\Models\Social;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -99,7 +100,16 @@ class AuthController extends Controller
             return response()->error('auth.invalid');
         }
 
-        return $this->respondWithToken($user);
+        switch($user->roles()){
+            case Setting::ROLE_ADMIN:
+                $url='http://adminpath';
+            case Setting::ROLE_TEACHER:
+                $url='http://teacherpath';
+            case Setting::ROLE_STUDENT:
+                $url='http://userpath';
+        }
+
+        return $this->respondWithToken($user,$url);
     }
 
     public function logout(Request $request)
@@ -240,7 +250,7 @@ class AuthController extends Controller
         return response()->message('auth.forgot');
     }
 
-    protected function respondWithToken($user)
+    protected function respondWithToken($user,$url)
     {
         $payload = auth('api')->factory()->claims([
             'sub' => $user->id,
@@ -249,12 +259,13 @@ class AuthController extends Controller
             'nbf' => Carbon::now()->timestamp,
             'jti' => uniqid(),
         ])->make();
-        $token = auth('api')->manager()->encode($payload);
 
+        $token = auth('api')->manager()->encode($payload);
 
         return response()->success([
             'token' => $token->__toString(),
             'locale' => $user->language,
+            'url' => $url
         ]);
     }
 }

@@ -44,4 +44,6 @@ class Setting extends Model
     const ROLE_STUDENT = 'student';
     const ROLE_TEACHER = 'teacher';
     const ROLE_ADMIN = 'admin';
+
+    const SARENTE='Sarente';
 }
