@@ -21,7 +21,8 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', ['as' => 'auth.login', 'uses' => 'Api\AuthController@login']);
     Route::post('forget', ['as' => 'auth.forgot', 'uses' => 'Api\AuthController@forgot']);
     Route::post('social/{provider}', ['as' => 'auth.social', 'uses' => 'Api\AuthController@social']);
-    Route::post('logout', ['as' => 'auth.logout', 'uses' => 'Api\AuthController@logout']);
+    Route::middleware('auth:api')->get('logout', ['as' => 'auth.logout', 'uses' => 'Api\AuthController@logout']);
+
 });
 
 Route::group(['middleware' => 'auth:api'], function ($router) {

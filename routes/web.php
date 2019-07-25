@@ -19,7 +19,7 @@ Auth::routes();
 
 
 
-Route::middleware('auth')->group(function(){
+Route::middleware('auth:web')->group(function(){
 
     Route::get('/home', 'HomeController@index')->name('home');
 
