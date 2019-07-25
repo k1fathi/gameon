@@ -40,4 +40,13 @@ class Permission extends Model
     {
         return __CLASS__ . " model has been {$eventName}";
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        parent::saving(function (self $model) {
+            $model->label=$model->name;
+        });
+    }
 }
