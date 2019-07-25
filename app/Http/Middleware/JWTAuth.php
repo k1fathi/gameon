@@ -36,7 +36,7 @@ class JWTAuth
     public function handle($request, Closure $next)
     {
         $bearer = $request->bearerToken();
-
+//dd($bearer);
         return $next($request);
     }
 }
