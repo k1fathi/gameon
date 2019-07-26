@@ -28,7 +28,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
 Route::group(['middleware' => 'auth:api'], function ($router) {
 
     Route::get('user', function (Request $request) {
-        return $request->user();
+        return $request->user()->with('roles')->first();
     });
 
     //Projects store

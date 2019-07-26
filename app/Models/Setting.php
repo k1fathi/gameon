@@ -51,21 +51,17 @@ class Setting extends Model
     public static function getUrl($roleName){
 
         $url='';
-        $roles=self::where('key','like',"%$roleName%")->get();
+        $keys=self::where('key','like',"%$roleName%")->get()->pluck('value','key');
 
-        if($roles->isNotEmpty()){
-
-            $roles=$roles->filter(function($key,$value){
-                    return $value;
-            });
+        if(count($keys)){
 
             switch($roleName){
                 case self::ROLE_STUDENT:
-                    $url=$roles['url_'.$roleName];
+                    $url=$keys[$roleName.'_url'];
                 case self::ROLE_TEACHER:
-                    $url=$roles['url_'.$roleName];
+                    $url=$keys[$roleName.'_url'];
                 case self::ROLE_ADMIN:
-                    $url=$roles['url_'.$roleName];
+                    $url=$keys[$roleName.'_url'];
             }
         }
         return $url;

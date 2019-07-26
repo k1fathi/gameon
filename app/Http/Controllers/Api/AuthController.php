@@ -99,10 +99,8 @@ class AuthController extends Controller
         if (!$user) {
             return response()->error('auth.invalid');
         }
-
-        $role=User::getRole();
-
-        $url=Setting::getUrl($role);
+        //FIXME: Get the first role of user
+        $url=Setting::getUrl($user->roles()->first()->name);
 
         return $this->respondWithToken($user,$url);
     }

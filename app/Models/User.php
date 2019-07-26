@@ -60,10 +60,4 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-
-    public static function getRole()
-    {
-        return self::getRoleNames();
-    }
-
 }
