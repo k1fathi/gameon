@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
 
     //Sorucevap, random soru al
     Route::get('question/get', 'Api\QuestionController@getQuestion');
+
     //Soru
     Route::resource('question', 'Api\QuestionController');
 

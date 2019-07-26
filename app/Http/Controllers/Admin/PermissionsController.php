@@ -43,15 +43,13 @@ protected $perPage = 15;
      * @param \Illuminate\Http\Request $Request
      * @return void
      */
-    public function store(Request $Request)
+    public function store(Request $request)
     {
-        $permission = Permission::firstOrNew(['name' => $Request->name]);
+        $this->validate($request, ['name' => 'required']);
 
-        $permission->save();
-        
-        $permissions = Permission::latest()->paginate($this->perPage);
+        Permission::create($request->all());
 
-        return view('admin.permissions.index', compact('permissions'));
+        return redirect('admin/permissions')->with('flash_message', 'Permission added!');
     }
 
     /**

@@ -45,5 +45,29 @@ class Setting extends Model
     const ROLE_TEACHER = 'teacher';
     const ROLE_ADMIN = 'admin';
 
-    const SARENTE='Sarente';
+    const SARENTE='sarente';
+
+
+    public static function getUrl($roleName){
+
+        $url='';
+        $roles=self::where('key','like',"%$roleName%")->get();
+
+        if($roles->isNotEmpty()){
+
+            $roles=$roles->filter(function($key,$value){
+                    return $value;
+            });
+
+            switch($roleName){
+                case self::ROLE_STUDENT:
+                    $url=$roles['url_'.$roleName];
+                case self::ROLE_TEACHER:
+                    $url=$roles['url_'.$roleName];
+                case self::ROLE_ADMIN:
+                    $url=$roles['url_'.$roleName];
+            }
+        }
+        return $url;
+    }
 }

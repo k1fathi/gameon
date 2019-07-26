@@ -95,10 +95,11 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $roles = Role::select('id', 'name', 'label')->get();
-        $roles = $roles->pluck('label', 'name');
+        $roles = Role::select('id', 'name')->get();
+        $roles = $roles->pluck('name', 'name');
 
         $user = User::with('roles')->select('id', 'name', 'email')->findOrFail($id);
+
         $user_roles = [];
         foreach ($user->roles as $role) {
             $user_roles[] = $role->name;
@@ -127,6 +128,7 @@ class UsersController extends Controller
         );
 
         $data = $request->except('password');
+
         if ($request->has('password')) {
             $data['password'] = bcrypt($request->password);
         }
@@ -135,6 +137,7 @@ class UsersController extends Controller
         $user->update($data);
 
         $user->roles()->detach();
+
         foreach ($request->roles as $role) {
             $user->assignRole($role);
         }

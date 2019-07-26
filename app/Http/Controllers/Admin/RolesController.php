@@ -36,7 +36,7 @@ class RolesController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::select('id', 'name', 'label')->get()->pluck('label', 'name');
+        $permissions = Permission::select('id', 'name')->get()->pluck('name', 'name');
 
         return view('admin.roles.create', compact('permissions'));
     }
@@ -50,9 +50,19 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        Role::create(['name' => $request->name]);
+        $this->validate($request, ['name' => 'required']);
 
-        return response()->success('common.success');
+        $role = Role::create($request->only('name'));
+        $role->permissions()->detach();
+
+        if ($request->has('permissions')) {
+            foreach ($request->permissions as $permission_name) {
+                $permission = Permission::whereName($permission_name)->first();
+                $role->givePermissionTo($permission);
+            }
+        }
+
+        return redirect('admin/roles')->with('flash_message', 'Role added!');
     }
 
     /**
@@ -79,7 +89,7 @@ class RolesController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        $permissions = Permission::select('id', 'name', 'label')->get()->pluck('label', 'name');
+        $permissions = Permission::select('id', 'name')->get()->pluck('name', 'name');
 
         return view('admin.roles.edit', compact('role', 'permissions'));
     }
@@ -97,7 +107,7 @@ class RolesController extends Controller
         $this->validate($request, ['name' => 'required']);
 
         $role = Role::findOrFail($id);
-        $role->update($request->all());
+        $role->update($request->only('name'));
         $role->permissions()->detach();
 
         if ($request->has('permissions')) {

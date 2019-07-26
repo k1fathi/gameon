@@ -100,14 +100,9 @@ class AuthController extends Controller
             return response()->error('auth.invalid');
         }
 
-        switch($user->roles()){
-            case Setting::ROLE_ADMIN:
-                $url='http://adminpath';
-            case Setting::ROLE_TEACHER:
-                $url='http://teacherpath';
-            case Setting::ROLE_STUDENT:
-                $url='http://userpath';
-        }
+        $role=User::getRole();
+
+        $url=Setting::getUrl($role);
 
         return $this->respondWithToken($user,$url);
     }
@@ -250,7 +245,7 @@ class AuthController extends Controller
         return response()->message('auth.forgot');
     }
 
-    protected function respondWithToken($user,$url)
+    protected function respondWithToken($user,$url=null)
     {
         $payload = auth('api')->factory()->claims([
             'sub' => $user->id,

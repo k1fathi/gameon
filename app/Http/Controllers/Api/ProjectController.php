@@ -24,7 +24,6 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $projects = Project::all();
-        return $projects;
 
         return response()->success('common.success');
     }
