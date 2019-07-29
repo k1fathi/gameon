@@ -16,19 +16,7 @@ use Storage;
 /**
  * App\Models\Image
  *
- * @property int $id
- * @property string $name
- * @property int $width
- * @property int $height
- * @property string|null $key
- * @property string|null $version
- * @property int $order
- * @property string|null $original_url
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $deleted_at
- * @property string $imageable_type
- * @property string $imageable_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read mixed $url
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $imageable
  * @property-write mixed $image
@@ -38,19 +26,6 @@ use Storage;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Image onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image query()
  * @method static bool|null restore()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereHeight($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereImageableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereImageableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereOriginalUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereVersion($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Image whereWidth($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Image withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Image withoutTrashed()
  * @mixin \Eloquent

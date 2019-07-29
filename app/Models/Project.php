@@ -6,6 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * App\Models\Project
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Avatar[] $avatars
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Rosette[] $rosettes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Step[] $steps
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project permission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project role($roles, $guard = null)
+ * @mixin \Eloquent
+ */
 class Project extends Model
 {
     use HasRoles;

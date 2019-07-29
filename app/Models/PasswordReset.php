@@ -11,13 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * App\Models\PasswordReset
  *
- * @property int $id
- * @property string $email
- * @property string $token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $deleted_at
- * @property string $user_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read \App\Models\User $user
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset newModelQuery()
@@ -26,13 +20,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset query()
  * @method static bool|null restore()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset valid()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PasswordReset whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\PasswordReset withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Models\PasswordReset withoutTrashed()
  * @mixin \Eloquent
