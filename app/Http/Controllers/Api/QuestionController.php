@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
-use App\Models\Photo;
+use App\Models\Image;
 use App\Models\Question;
 use App\Models\User;
 use Illuminate\Http\Request;

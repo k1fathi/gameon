@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\Social
@@ -32,6 +33,7 @@ use Illuminate\Support\Collection;
  */
 class Social extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'provider',
         'provider_id',

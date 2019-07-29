@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Intervention;
 use Ramsey\Uuid\Uuid;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Storage;
 
 /**
@@ -56,6 +57,7 @@ use Storage;
  */
 class Image extends Model
 {
+    use LogsActivity;
     use SoftDeletes;
 
     public $resizeQuality = 90;

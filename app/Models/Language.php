@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\Language
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Language extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'locale',
         'native',

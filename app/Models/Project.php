@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class Project extends Model
 {
     use HasRoles;
+    use LogsActivity;
 
     protected $table = 'projects';
 

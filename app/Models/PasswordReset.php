@@ -6,6 +6,7 @@ use App\Notifications\ForgotPassword;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\PasswordReset
@@ -39,6 +40,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PasswordReset extends Model
 {
     use SoftDeletes;
+    use LogsActivity;
 
     protected $fillable = [
         'email',

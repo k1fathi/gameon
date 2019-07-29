@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Question extends Model
 {
+    use LogsActivity;
     protected $table = 'questions';
 
     protected $fillable = [
@@ -25,6 +27,6 @@ class Question extends Model
 
     public function photo()
     {
-        return $this->morphMany('App\Models\Photo', 'model');
+        return $this->morphMany('App\Models\Image', 'model');
     }
 }
