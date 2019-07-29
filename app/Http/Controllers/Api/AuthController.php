@@ -102,17 +102,17 @@ class AuthController extends Controller
         }
 
         $roleNames = $user->roles()->pluck('name','id')->toArray();
-
         $rolename = Setting::ROLE_STUDENT;
 
         //If user have a admin role it have to be set as admin
-        if (in_array(Setting::ROLE_ADMIN, $roleNames)) {
-            $rolename = Setting::ROLE_ADMIN;
-        } else if (in_array(Setting::ROLE_TEACHER, $roleNames)) {
+        if (in_array(Setting::ROLE_TEACHER, $roleNames)) {
             $rolename = Setting::ROLE_TEACHER;
         }
+        if (in_array(Setting::ROLE_ADMIN, $roleNames)) {
+            $rolename = Setting::ROLE_ADMIN;
+        }
         $url = User::getUrl($rolename);
-        return $this->respondWithToken($user, $url);
+        return $this->respondWithToken($user, $rolename,$url);
     }
 
     public function logout(Request $request)
@@ -253,7 +253,7 @@ class AuthController extends Controller
         return response()->message('auth.forgot');
     }
 
-    protected function respondWithToken($user, $url = null)
+    protected function respondWithToken($user,$rolename=null, $url = null)
     {
         $payload = auth('api')->factory()->claims([
             'sub' => $user->id,
@@ -268,6 +268,7 @@ class AuthController extends Controller
         return response()->success([
             'token' => $token->__toString(),
             'locale' => $user->language ?? App::getLocale(),
+            'role' => $rolename,
             'url' => $url
         ]);
     }
