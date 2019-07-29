@@ -100,10 +100,19 @@ class AuthController extends Controller
         if (!$user) {
             return response()->error('auth.invalid');
         }
-        //FIXME: Get the first role of user
-        $url=Setting::getUrl($user->roles()->first()->name);
 
-        return $this->respondWithToken($user,$url);
+        $roleNames = $user->roles()->pluck('name','id')->toArray();
+
+        $rolename = Setting::ROLE_STUDENT;
+
+        //If user have a admin role it have to be set as admin
+        if (in_array(Setting::ROLE_ADMIN, $roleNames)) {
+            $rolename = Setting::ROLE_ADMIN;
+        } else if (in_array(Setting::ROLE_TEACHER, $roleNames)) {
+            $rolename = Setting::ROLE_TEACHER;
+        }
+        $url = User::getUrl($rolename);
+        return $this->respondWithToken($user, $url);
     }
 
     public function logout(Request $request)
@@ -244,7 +253,7 @@ class AuthController extends Controller
         return response()->message('auth.forgot');
     }
 
-    protected function respondWithToken($user,$url=null)
+    protected function respondWithToken($user, $url = null)
     {
         $payload = auth('api')->factory()->claims([
             'sub' => $user->id,
@@ -258,7 +267,7 @@ class AuthController extends Controller
 
         return response()->success([
             'token' => $token->__toString(),
-            'locale' => $user->language ?? App::getLocale() ,
+            'locale' => $user->language ?? App::getLocale(),
             'url' => $url
         ]);
     }

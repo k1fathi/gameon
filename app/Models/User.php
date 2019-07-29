@@ -60,4 +60,27 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public static function getUrl($roleName = null)
+    {
+
+        $url = '';
+        $urlStr='_url';
+
+        if (!is_null($roleName)) {
+            //FIXME: put in cache
+            $keys = Setting::where('key', 'like', "%$roleName%")->pluck('value', 'key');
+            if (count($keys)) {
+
+                switch ($roleName) {
+                    case Setting::ROLE_STUDENT:
+                        $url = $keys[$roleName . $urlStr];
+                    case Setting::ROLE_TEACHER:
+                        $url = $keys[$roleName . $urlStr];
+                    case Setting::ROLE_ADMIN:
+                        $url = $keys[$roleName . $urlStr];
+                }
+            }
+        }
+        return $url;
+    }
 }

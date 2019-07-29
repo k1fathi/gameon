@@ -48,22 +48,5 @@ class Setting extends Model
     const SARENTE='sarente';
 
 
-    public static function getUrl($roleName){
 
-        $url='';
-        $keys=self::where('key','like',"%$roleName%")->get()->pluck('value','key');
-
-        if(count($keys)){
-
-            switch($roleName){
-                case self::ROLE_STUDENT:
-                    $url=$keys[$roleName.'_url'];
-                case self::ROLE_TEACHER:
-                    $url=$keys[$roleName.'_url'];
-                case self::ROLE_ADMIN:
-                    $url=$keys[$roleName.'_url'];
-            }
-        }
-        return $url;
-    }
 }
