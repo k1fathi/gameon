@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ResponseServiceProvider::class,
         //Tymon\JWTAuth\Providers\LaravelServiceProvider::class
+        Dimsav\Translatable\TranslatableServiceProvider::class,
     ],
 
     /*

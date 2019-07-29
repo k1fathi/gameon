@@ -13,6 +13,7 @@ use App\Models\PasswordReset;
 use App\Models\Setting;
 use App\Models\Social;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
@@ -257,7 +258,7 @@ class AuthController extends Controller
 
         return response()->success([
             'token' => $token->__toString(),
-            'locale' => $user->language,
+            'locale' => $user->language ?? App::getLocale() ,
             'url' => $url
         ]);
     }
