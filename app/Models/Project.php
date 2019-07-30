@@ -11,9 +11,9 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Avatar[] $avatars
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Image[] $image
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Rosette[] $rosettes
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Step[] $steps
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
@@ -49,11 +49,6 @@ class Project extends Model
         ];
     }
 
-    public function rosettes()
-    {
-        return $this->belongsToMany(Rosette::class);
-    }
-
     public function avatars()
     {
         return $this->belongsToMany(Avatar::class);
@@ -62,6 +57,26 @@ class Project extends Model
     public function steps()
     {
         return $this->hasMany(Step::class);
+    }
+
+    public function image()
+    {
+        return $this->morphMany('App\Models\Image', 'imageable');
+    }
+
+    public function feeds()
+    {
+        return $this->morphMany(Feed::class, 'feedable');
+    }
+
+    /**
+     * Change activity log event description
+     * @param string $eventName
+     * @return string
+     */
+    public function getDescriptionForEvent($eventName)
+    {
+        return __CLASS__ . " model has been {$eventName}";
     }
 
     public static function boot()

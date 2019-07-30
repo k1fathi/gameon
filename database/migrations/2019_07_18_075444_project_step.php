@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ProjectRosette extends Migration
+class ProjectStep extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class ProjectRosette extends Migration
      */
     public function up()
     {
-        Schema::create('project_rosette', function (Blueprint $table) {
+        Schema::create('project_step', function (Blueprint $table) {
+
+            $table->bigIncrements('id');
+            $table->Integer('quota');
+            $table->string('title');
+            $table->dateTime('end_date');
             $table->timestamps();
 
             $table->bigInteger('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('cascade');
-
-            $table->bigInteger('rosette_id')->unsigned();
-            $table->foreign('rosette_id')->references('id')->on('rosettes')->onUpdate('cascade')->onDelete('cascade');
-
         });
     }
 
@@ -32,6 +33,6 @@ class ProjectRosette extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_rosette');
+        Schema::dropIfExists('project_step');
     }
 }

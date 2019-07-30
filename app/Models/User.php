@@ -11,7 +11,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * App\Models\User
- *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
@@ -76,11 +75,21 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function rosettes()
+    {
+        return $this->morphMany('App\Models\Rosette', 'rosetteable');
+    }
+
+    public function points()
+    {
+        return $this->morphMany('App\Models\Point', 'pointable');
+    }
+
     public static function getUrl($roleName = null)
     {
 
         $url = '';
-        $urlStr='_url';
+        $urlStr = '_url';
 
         if (!is_null($roleName)) {
             //FIXME: put in cache

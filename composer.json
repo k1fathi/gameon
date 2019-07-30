@@ -17,6 +17,7 @@
         "laravel/tinker": "^1.0",
         "league/flysystem": "^1.0.53",
         "spatie/laravel-permission": "^2.37",
+        "intervention/image": "^2.4",
         "tymon/jwt-auth": "1.0.0-rc.4.1"
     },
     "require-dev": {
