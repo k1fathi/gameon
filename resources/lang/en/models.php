@@ -148,4 +148,9 @@ return [
     'permission'             => [
         'name' => 'Name',
     ],
+    'feed'             => [
+        'project' => 'Project',
+        'club' => 'Club',
+        'profile' => 'Profile',
+    ],
 ];

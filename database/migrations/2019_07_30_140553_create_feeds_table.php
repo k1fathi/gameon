@@ -14,8 +14,18 @@ class CreateFeedsTable extends Migration
     public function up()
     {
         Schema::create('feeds', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->boolean('is_premium')->default(0);
+            $table->boolean('is_like')->default(false);
+            $table->boolean('is_dislike')->default(false);
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->bigInteger('user_id');
+            $table->foreign('user_id')->references('id')
+                ->on('users')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->morphs('feedable');
         });
     }
 

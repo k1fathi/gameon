@@ -18,6 +18,7 @@ class CreateProfilesTable extends Migration
             $table->Integer('point');
             $table->Integer('gold');
             $table->Integer('experience');
+            $table->json('avatar');//{'necklace'=>['image_id'=>image_table_id_goes_here,'id'=>necklace_table_id_goes_here,'name'=>'necklace_name_field']}
             $table->timestamps();
 
             $table->bigInteger('user_id')->unsigned();
