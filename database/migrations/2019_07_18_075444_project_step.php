@@ -16,7 +16,6 @@ class ProjectStep extends Migration
         Schema::create('project_step', function (Blueprint $table) {
 
             $table->bigIncrements('id');
-            $table->Integer('quota');
             $table->string('title');
             $table->dateTime('end_date');
             $table->timestamps();

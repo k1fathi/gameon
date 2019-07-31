@@ -22,7 +22,8 @@ class ProjectUser extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->string('role',100)->default('member');
+            $table->string('role'
+            )->default('member');//???
             $table->unique(['project_id', 'user_id']);
         });
     }
