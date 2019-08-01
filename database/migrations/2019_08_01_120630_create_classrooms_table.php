@@ -23,7 +23,7 @@ class CreateClassroomsTable extends Migration
         {
             $table->increments('id');
             $table->string('category')->nullable();
-            $table->json('extension')->nullable();
+            $table->json('label')->nullable();
             $table->string('locale')->index();
 
             $table->integer('classrooms_id')->unsigned();

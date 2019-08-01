@@ -153,4 +153,9 @@ return [
         'club' => 'Club',
         'profile' => 'Profile',
     ],
+    'classroom'             => [
+        'category' => 'Category',
+        'name' => 'Name',
+        'label' => 'Label',
+    ],
 ];
