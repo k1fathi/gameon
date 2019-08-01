@@ -59,5 +59,4 @@ class Setting extends Model
     const SARENTE='sarente';
 
 
-
 }
