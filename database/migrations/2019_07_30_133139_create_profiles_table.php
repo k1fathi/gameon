@@ -19,6 +19,8 @@ class CreateProfilesTable extends Migration
             $table->Integer('gold');
             $table->Integer('experience');
             $table->string('classroom');
+            $table->json('related_fields');
+            $table->json('favorite_games');
             $table->json('avatar');//{'necklace'=>['image_id'=>image_table_id_goes_here,'id'=>necklace_table_id_goes_here,'name'=>'necklace_name_field']}
             $table->timestamps();
 
