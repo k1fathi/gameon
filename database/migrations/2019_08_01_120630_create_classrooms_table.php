@@ -17,9 +17,16 @@ class CreateClassroomsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('number');
             $table->timestamps();
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
 
-        Schema::create('classrooms_translations', function(Blueprint $table)
+        Schema::create('classroom_translations', function(Blueprint $table)
         {
             $table->increments('id');
             $table->string('category')->nullable();
@@ -40,6 +47,7 @@ class CreateClassroomsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('classroom_translations');
         Schema::dropIfExists('classrooms');
     }
 }
