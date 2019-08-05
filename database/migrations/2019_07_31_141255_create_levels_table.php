@@ -16,8 +16,7 @@ class CreateLevelsTable extends Migration
         Schema::create('levels', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->integer('point');
-            $table->integer('rosette');
+            $table->integer('point')->nullable();
             $table->integer('experience');
             $table->timestamps();
         });
