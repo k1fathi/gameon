@@ -16,14 +16,7 @@ class CreateClassroomsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('number');
             $table->timestamps();
-
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-        });
+       });
 
         Schema::create('classroom_translations', function (Blueprint $table) {
             $table->increments('id');
@@ -31,14 +24,14 @@ class CreateClassroomsTable extends Migration
             $table->json('label')->nullable();
             $table->string('locale')->index();
 
-            $table->bigInteger('classrooms_id')->unsigned();
-            $table->foreign('classrooms_id')
+            $table->bigInteger('classroom_id')->unsigned();
+            $table->foreign('classroom_id')
                 ->references('id')
                 ->on('classrooms')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->unique(['classrooms_id', 'locale']);
+            $table->unique(['classroom_id', 'locale']);
         });
     }
 
