@@ -8,7 +8,6 @@ class CreateFeedsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
      * @return void
      */
     public function up()
@@ -21,9 +20,14 @@ class CreateFeedsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            /*$table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onUpdate('cascade')->onDelete('cascade');*/
+            $table->bigInteger('user_id')
+                ->unsigned()
+                ->index();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->morphs('feedable');
         });
@@ -31,7 +35,6 @@ class CreateFeedsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
      * @return void
      */
     public function down()

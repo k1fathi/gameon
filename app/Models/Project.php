@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Avatar[] $avatars
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Feed[] $feeds
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Image[] $image
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
