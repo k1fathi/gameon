@@ -21,7 +21,7 @@ class CreateClassroomsTable extends Migration
         Schema::create('classroom_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('category')->nullable();
-            $table->json('label')->nullable();
+            $table->text('label')->nullable();
             $table->string('locale')->index();
 
             $table->bigInteger('classroom_id')->unsigned();
