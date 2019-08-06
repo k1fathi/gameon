@@ -33,8 +33,6 @@ class Classroom extends Model
 
     protected $fillable = [
         'number',
-        'label',
-        'category'
     ];
 
     public $translatedAttributes = [
