@@ -20,7 +20,7 @@ class CreateTagsTable extends Migration
 
             $table->string('tagable_type');
             $table->integer('tageable_id');
-            $table->index(['tagable_type', 'tagable_id']);
+            $table->index(['tagable_type', 'tageable_id']);
         });
 
         Schema::create('tag_translations', function(Blueprint $table)
@@ -29,7 +29,7 @@ class CreateTagsTable extends Migration
             $table->string('label')->nullable();
             $table->string('locale')->index();
 
-            $table->integer('tag_id')->unsigned();
+            $table->bigInteger('tag_id')->unsigned();
             $table->foreign('tag_id')->references('id')->on('tags')->onUpdate('cascade')->onDelete('cascade');
 
             $table->unique(['tag_id','locale']);

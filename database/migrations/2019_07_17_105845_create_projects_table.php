@@ -29,7 +29,7 @@ class CreateProjectsTable extends Migration
             $table->text('description')->nullable();
             $table->string('locale')->index();
 
-            $table->integer('project_id')->unsigned();
+            $table->bigInteger('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade')->onDelete('cascade');
 
             $table->unique(['project_id','locale']);

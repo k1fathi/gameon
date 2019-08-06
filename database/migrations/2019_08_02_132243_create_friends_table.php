@@ -8,7 +8,6 @@ class CreateFriendsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
      * @return void
      */
     public function up()
@@ -27,32 +26,30 @@ class CreateFriendsTable extends Migration
         });
 
         Schema::create('friend
-        _translations', function(Blueprint $table)
-        {
+        _translations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('category')->nullable();
             $table->json('label')->nullable();
             $table->string('locale')->index();
 
-            $table->integer('friend
-            s_id')->unsigned();
-            $table->foreign('friend
-            s_id')->references('id')->on('friend
-            s')->onUpdate('cascade')->onDelete('cascade');
+            $table->bigInteger('friends_id')->unsigned();
+            $table->foreign('friends_id')
+                ->references('id')
+                ->on('friends')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
-            $table->unique(['friend
-            s_id','locale']);
+            $table->unique(['friends_id', 'locale']);
         });
     }
 
     /**
      * Reverse the migrations.
-     *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('friend_translations');
         Schema::dropIfExists('friends');
+        //Schema::dropIfExists('friend_translations');
     }
 }

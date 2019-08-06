@@ -29,7 +29,7 @@ class CreateRosettesTable extends Migration
             $table->string('description')->nullable();
             $table->string('locale')->index();
 
-            $table->integer('rosette_id')->unsigned();
+            $table->bigInteger('rosette_id')->unsigned();
             $table->foreign('rosette_id')->references('id')->on('rosettes')->onUpdate('cascade')->onDelete('cascade');
 
             $table->unique(['rosette_id','locale']);
