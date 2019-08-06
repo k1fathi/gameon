@@ -22,6 +22,13 @@ class CreateProjectsTable extends Migration
             $table->timestamp('end_date')->nullable();
             $table->boolean('is_completed');
             $table->timestamps();
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('projects')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
 
         Schema::create('project_translations', function(Blueprint $table)

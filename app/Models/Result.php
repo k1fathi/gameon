@@ -15,18 +15,16 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Rosette query()
  * @mixin \Eloquent
  */
-class Rosette extends Model
+class Result extends Model
 {
     use LogsActivity;
 
     protected $fillable = [
         'name',
-        'description'
     ];
 
-    public function image()
+    public function resultable()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->belongsTo();
     }
-
 }

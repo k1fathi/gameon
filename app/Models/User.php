@@ -85,6 +85,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->morphMany('App\Models\Point', 'pointable');
     }
 
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
     public static function getUrl($roleName = null)
     {
 

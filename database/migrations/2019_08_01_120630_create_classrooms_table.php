@@ -13,10 +13,10 @@ class CreateClassroomsTable extends Migration
     public function up()
     {
         Schema::create('classrooms', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('number');
-            $table->timestamps();
-       });
+        $table->bigIncrements('id');
+        $table->integer('number');
+        $table->timestamps();
+    });
 
         Schema::create('classroom_translations', function (Blueprint $table) {
             $table->increments('id');
