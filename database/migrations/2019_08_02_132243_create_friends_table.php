@@ -25,8 +25,7 @@ class CreateFriendsTable extends Migration
                 ->onDelete('cascade');
         });
 
-        Schema::create('friend
-        _translations', function (Blueprint $table) {
+        Schema::create('friend_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('category')->nullable();
             $table->json('label')->nullable();
@@ -49,7 +48,7 @@ class CreateFriendsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('friend_translations');
         Schema::dropIfExists('friends');
-        //Schema::dropIfExists('friend_translations');
     }
 }
