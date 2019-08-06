@@ -24,5 +24,9 @@ class Rosette extends Model
         'description'
     ];
 
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
 
 }
