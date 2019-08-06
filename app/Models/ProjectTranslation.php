@@ -10,5 +10,10 @@ class ProjectTranslation extends Model
     use LogsActivity;
 
     public $timestamps = false;
-    protected $fillable = ['name','description'];
+    protected $fillable = ['name','description','locale'];
+
+    function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }
