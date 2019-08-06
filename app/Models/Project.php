@@ -62,7 +62,7 @@ class Project extends Model
 
     public function image()
     {
-        return $this->morphMany('App\Models\Image', 'imageable');
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     public function feeds()

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRosettesTable extends Migration
+class CreateResultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,26 +13,28 @@ class CreateRosettesTable extends Migration
      */
     public function up()
     {
-        Schema::create('rosettes', function (Blueprint $table) {
+        Schema::create('results', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->timestamps();
 
-            $table->string('rosetteable_type');
-            $table->integer('rosetteable_id');
-            $table->index(['rosetteable_type', 'rosetteable_id']);
+            $table->morphs('resultable');
         });
 
-        Schema::create('rosette_translations', function(Blueprint $table)
+        Schema::create('result_translations', function(Blueprint $table)
         {
             $table->increments('id');
             $table->string('description')->nullable();
             $table->string('locale')->index();
 
-            $table->bigInteger('rosette_id')->unsigned();
-            $table->foreign('rosette_id')->references('id')->on('rosettes')->onUpdate('cascade')->onDelete('cascade');
+            $table->bigInteger('result_id')->unsigned();
+            $table->foreign('result_id')
+                ->references('id')
+                ->on('results')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
-            $table->unique(['rosette_id','locale']);
+            $table->unique(['result_id','locale']);
         });
     }
 
