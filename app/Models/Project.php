@@ -29,24 +29,19 @@ class Project extends Model
 
     protected $table = 'projects';
 
+    public $translatedAttributes = ['name','description'];
     protected $fillable = [
-        'name',
-        'description',
         'quota',
         'start_date',
         'finish_date',
-        'gold',
-        'experience',
+        'point',
+        'xp',
         'is_completed'
     ];
 
-    public function getMembers()
+    public function participants()
     {
-        return [
-            'students' => User::role(Setting::PROJECT_STUDENT . '_' . $this->id)->get(),
-            'teachers' => User::role(Setting::PROJECT_TEACHER . '_' . $this->id)->get(),
-            'leader' => User::role(Setting::PROJECT_LEADER . '_' . $this->id)->get()
-        ];
+        return $this->belongsToMany(User::class);
     }
 
     public function avatars()
@@ -84,14 +79,11 @@ class Project extends Model
         parent::boot();
 
         static::created(function ($model) {
-            Role::create(['name' => Setting::PROJECT_STUDENT . '_' . $model->id]);
-            Role::create(['name' => Setting::PROJECT_TEACHER . '_' . $model->id]);
-            Role::create(['name' => Setting::PROJECT_LEADER . '_' . $model->id]);
 
-            Permission::create(['name' => Setting::PROJECT_CREATE . '_' . $model->id]);
-            Permission::create(['name' => Setting::PROJECT_READ . '_' . $model->id]);
-            Permission::create(['name' => Setting::PROJECT_UPDATE . '_' . $model->id]);
-            Permission::create(['name' => Setting::PROJECT_DELETE . '_' . $model->id]);
+            Permission::create(['name' => Setting::PERMISSION_PROJECT_ACCEPT . '_' . $model->id]);
+            Permission::create(['name' => Setting::PERMISSION_PROJECT_DONE . '_' . $model->id]);
+            Permission::create(['name' => Setting::PERMISSION_PROJECT_UPDATE . '_' . $model->id]);
+            Permission::create(['name' => Setting::PERMISSION_PROJECT_DELETE . '_' . $model->id]);
         });
 
         static::deleting(function ($model) {
