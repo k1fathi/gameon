@@ -50,9 +50,17 @@ class ProjectController extends Controller
     {
         $project = Project::create($request->all());
 
-        $user = User::find($request->user_id);
+        if($request->user()->hasRole('student'))
+        {
+            $request->user()->givePermissionTo([
+                Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
+                Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
+                Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
+                Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
+            ]);
+        }
 
-        if($user->hasRole('teacher'))
+        if($request->user()->hasRole('teacher'))
         {
             $rosettes = Rosette::find($request->rosette_ids);
             $project->rosettes()->saveMany($rosettes);
@@ -61,29 +69,22 @@ class ProjectController extends Controller
             $project->avatars()->saveMany($avatars);
 
             $students = User::find($request->student_ids);
-            $this->studentSave($students, $project->id);
+            $project->participants()->saveMany($students);
 
             $teachers = User::find($request->teacher_ids);
-            $this->teacherSave($teachers, $project->id);
+            $project->participants()->saveMany($teachers);
+            foreach ($teachers as $teacher)
+            {
+                $teacher->givePermissionTo([
+                    Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
+                    Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
+                    Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
+                    Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
+                ]);
+            }
         }
 
         return response()->success('common.success');
-    }
-
-    public function studentSave($students, $project_id)
-    {
-        foreach ($students as $student)
-        {
-            $student->assignRole(Setting::PROJECT_STUDENT . $project_id);
-        }
-    }
-
-    public function teacherSave($teachers, $project_id)
-    {
-        foreach ($teachers as $teacher)
-        {
-            $teacher->assignRole(Setting::PROJECT_TEACHER  . $project_id);
-        }
     }
 
     /**
