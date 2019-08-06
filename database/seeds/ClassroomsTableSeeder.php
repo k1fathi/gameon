@@ -11,21 +11,29 @@ class ClassroomsTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::create([
+        \App\Models\Classroom::create([
             'category:'. App::getLocale()    => 'ilkokul',
             'number' => 1,
-            'label:'. App::getLocale() => ['label1'=>'label1'],
+            'label:'. App::getLocale() => json_encode(['label1'=>'1C']),
         ]);
-        \App\Models\User::create([
+        \App\Models\Classroom::create([
             'category:'. App::getLocale()    => 'ortaokul',
             'number' => 6,
-            'label:'. App::getLocale() => ['label1'=>'label1'],
+            'label:'. App::getLocale() => json_encode(['label1'=>'6B']),
         ]);
-        \App\Models\User::create([
+        \App\Models\Classroom::create([
             'category:'. App::getLocale()    => 'lise',
             'number' => 9,
-            'label:'. App::getLocale() => ['label1'=>'label1'],
+            'label:'. App::getLocale() => json_encode(['label1'=>'9A']),
         ]);
 
+        /*$classroom=\App\Models\Classroom::firstOrNew([
+            'number' => 1,
+        ]);
+        $classroom->fill([
+            'category:'. App::getLocale()    => 'ilkokul',
+            'label:'. App::getLocale() => json_encode(['label1'=>'1C']),
+        ]);
+        $classroom->save();*/
     }
 }
