@@ -65,6 +65,11 @@ class Project extends Model
         return $this->morphMany(Feed::class, 'feedable');
     }
 
+    public function translation()
+    {
+        return $this->hasOne(ProjectTranslation::class);
+    }
+
     /**
      * Change activity log event description
      * @param string $eventName
