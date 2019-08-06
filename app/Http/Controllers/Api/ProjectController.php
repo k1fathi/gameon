@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProjectTranslation;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\Project;
@@ -19,13 +20,21 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return array
      */
     public function index(Request $request)
     {
         $projects = Project::all();
 
-        return response()->success('common.success');
+        foreach ($projects as $project)
+        {
+            $project->title = $project->translation()->value('name');
+            $project->comment = $project->translation()->value('description');
+            $project->author = $project->participants()->permission(Setting::PERMISSION_PROJECT_DONE . '_' . $project->id)->value('name');
+            $project->img = $project->image()->value('original_url');
+        }
+
+        return $projects;
     }
 
     /**
@@ -50,6 +59,13 @@ class ProjectController extends Controller
     {
         $project = Project::create($request->all());
 
+        $translation = new ProjectTranslation([
+            'name'=> $request->name,
+            'description'=> $request->description,
+            'locale'=> $request->getLocale()]);
+
+        $project->translation()->save($translation);
+
         if($request->user()->hasRole('student'))
         {
             $request->user()->givePermissionTo([
@@ -62,11 +78,11 @@ class ProjectController extends Controller
 
         if($request->user()->hasRole('teacher'))
         {
-            $rosettes = Rosette::find($request->rosette_ids);
-            $project->rosettes()->saveMany($rosettes);
-
-            $avatars = Avatar::find($request->avatar_ids);
-            $project->avatars()->saveMany($avatars);
+//            $rosettes = Rosette::find($request->rosette_ids);
+//            $project->rosettes()->saveMany($rosettes);
+//
+//            $avatars = Avatar::find($request->avatar_ids);
+//            $project->avatars()->saveMany($avatars);
 
             $students = User::find($request->student_ids);
             $project->participants()->saveMany($students);
