@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * App\Models\Rosette
+ * App\Models\Result
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $owner
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Rosette newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Rosette newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Rosette query()
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $resultable
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Result newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Result newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Result query()
  * @mixin \Eloquent
  */
 class Result extends Model
@@ -25,6 +25,6 @@ class Result extends Model
 
     public function resultable()
     {
-        return $this->belongsTo();
+        return $this->morphTo();
     }
 }

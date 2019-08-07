@@ -11,7 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * App\Models\User
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
+ * @property-read \App\Models\Image $image
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
@@ -73,16 +75,6 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function rosettes()
-    {
-        return $this->morphMany('App\Models\Rosette', 'rosetteable');
-    }
-
-    public function points()
-    {
-        return $this->morphMany('App\Models\Point', 'pointable');
     }
 
     public function image()

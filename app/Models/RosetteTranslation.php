@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * App\Models\Rosette
+ * App\Models\RosetteTranslation
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $owner
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Rosette newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Rosette newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Rosette query()
+ * @property-read \App\Models\Rosette $rosette
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RosetteTranslation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RosetteTranslation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\RosetteTranslation query()
  * @mixin \Eloquent
  */
 class RosetteTranslation extends Model
