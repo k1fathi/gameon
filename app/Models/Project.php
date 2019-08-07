@@ -48,9 +48,9 @@ class Project extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function avatars()
+    public function rosettes()
     {
-        return $this->belongsToMany(Avatar::class);
+        return $this->belongsToMany(Rosette::class, 'projects_rosettes');
     }
 
     public function steps()
