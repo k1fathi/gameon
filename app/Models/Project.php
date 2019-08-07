@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
@@ -27,6 +28,7 @@ class Project extends Model
 {
     use HasRoles;
     use LogsActivity;
+    use Translatable;
 
     protected $table = 'projects';
 
@@ -36,7 +38,7 @@ class Project extends Model
         'start_date',
         'finish_date',
         'point',
-        'xp',
+        'experience',
         'is_completed'
     ];
 
