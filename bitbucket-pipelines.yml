@@ -6,7 +6,9 @@
 image: atlassian/default-image:2
 
 pipelines:
-  default:
+  #default:
+  branches:
+    master:
     - step:
         services:
           - docker
@@ -23,3 +25,10 @@ definitions:
   services:
     docker:
       memory: 2048
+    #mysql:
+    #      image: mysql:5.7
+    #      environment:
+    #        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    #        MYSQL_DATABASE: 'homestead'
+    #        MYSQL_USER: 'homestead'
+    #        MYSQL_PASSWORD: 'secret'
