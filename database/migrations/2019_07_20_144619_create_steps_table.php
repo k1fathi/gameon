@@ -32,7 +32,6 @@ class CreateStepsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->Integer('is_completed')->default(0);
             $table->timestamps();
 
             $table->bigInteger('step_id')->unsigned();

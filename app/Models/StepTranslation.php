@@ -14,13 +14,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Step query()
  * @mixin \Eloquent
  */
-class Step extends Model
+class StepTranslation extends Model
 {
     use LogsActivity;
-    use Translatable;
 
     protected $fillable = [
-        'step_no',
-        'is_completed',
+        'name',
+        'description'
     ];
+
+    function step()
+    {
+        return $this->belongsTo(Step::class);
+    }
 }
