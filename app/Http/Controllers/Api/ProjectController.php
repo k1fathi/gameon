@@ -27,16 +27,25 @@ class ProjectController extends Controller
     {
         $projects = Project::all();
 
-        foreach ($projects as $project)
-        {
-            $project->title = $project->translation()->value('name');
-            $project->comment = $project->translation()->value('description');
-            $project->author = $project->participants()->permission(Setting::PERMISSION_PROJECT_DONE . '_' . $project->id)->value('name');
-            $project->img = $project->image()->value('original_url');
-        }
+        $projects = $projects->map(function ($project) {
+            return [
+                'kulakcikColor' => 'pink.png',
+                'kulakcikText' => 'İlk 3',
+                'project_id' => $project->id,
+                'kulakcikImg' => $project->image()->value('original_url'),//'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvOpUOWrgMt3aBuFFQiChzN-0zK3PEbzASVXyg0mEmvhGM21YA',//$project->image()->value('original_url'),
+                'title' => $project->name,
+                'comment' => $project->description,
+                'startDate' => $project->start_date,
+                'endDate' => $project->end_date,
+                'author' => User::where('id', $project->user_id)->value('name'),
+                'likes' => 0,
+                'views' => 0,
+            ];
+        });
 
-        return $projects;
+        return response()->success('common.success', $projects);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -62,6 +71,7 @@ class ProjectController extends Controller
             'quota' => $request->quota,
             'point' => $request->point,
             'experience' => $request->experience,
+            'user_id' => $request->user()->id
         ]);
         $project->fill([
             'name:'. App::getLocale()    => $request->name,
@@ -81,8 +91,8 @@ class ProjectController extends Controller
 
         if($request->user()->hasRole('teacher'))
         {
-//            $rosettes = Rosette::find($request->rosette_ids);
-//            $project->rosettes()->saveMany($rosettes);
+            $rosettes = Rosette::find($request->rosette_ids);
+            $project->rosettes()->saveMany($rosettes);
 //
 //            $avatars = Avatar::find($request->avatar_ids);
 //            $project->avatars()->saveMany($avatars);
