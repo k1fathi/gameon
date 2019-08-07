@@ -39,7 +39,8 @@ class Project extends Model
         'finish_date',
         'point',
         'experience',
-        'is_completed'
+        'is_completed',
+        'user_id'
     ];
 
     public function participants()
