@@ -20,7 +20,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Question extends Model
 {
     use LogsActivity;
-    protected $table = 'questions';
 
     protected $fillable = [
         'question_text',
