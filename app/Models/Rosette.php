@@ -29,4 +29,10 @@ class Rosette extends Model
         return $this->morphOne(Image::class, 'imageable');
     }
 
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class,'projects_rosettes');
+    }
+
+
 }

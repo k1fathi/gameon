@@ -18,7 +18,6 @@ class CreateFeedsTable extends Migration
             $table->boolean('is_like')->default(false);
             $table->boolean('is_dislike')->default(false);
             $table->timestamps();
-            $table->softDeletes();
 
             $table->bigInteger('user_id')
                 ->unsigned()
