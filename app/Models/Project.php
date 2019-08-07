@@ -35,8 +35,8 @@ class Project extends Model
         'description',
         'quota',
         'start_date',
-        'finish_date',
-        'gold',
+        'end_date',
+        'point',
         'experience',
         'is_completed'
     ];

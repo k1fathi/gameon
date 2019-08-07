@@ -14,10 +14,8 @@ class CreateStepsTable extends Migration
     public function up()
     {
         Schema::create('steps', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->Integer('step_no');
-            $table->string('name');
-            $table->text('description');
             $table->Integer('is_completed')->default(0);
             $table->timestamps();
 
@@ -25,6 +23,22 @@ class CreateStepsTable extends Migration
             $table->foreign('project_id')
                 ->references('id')
                 ->on('projects')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+        });
+
+        Schema::create('step_translations', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->Integer('is_completed')->default(0);
+            $table->timestamps();
+
+            $table->bigInteger('step_id')->unsigned();
+            $table->foreign('step_id')
+                ->references('id')
+                ->on('steps')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
@@ -38,6 +52,7 @@ class CreateStepsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('step_translations');
         Schema::dropIfExists('steps');
     }
 }
