@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -18,30 +17,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Rosette extends Model
 {
     use LogsActivity;
-    use Translatable;
+
+    public $timestamps = false;
 
     protected $fillable = [
-
-    ];
-    public $translatedAttributes = [
         'name',
         'description'
     ];
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-        'translations',
-    ];
 
-    public function image()
+    function rosette()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->belongsTo(Rosette::class);
     }
-
-    public function projects()
-    {
-        return $this->belongsToMany(Project::class, 'projects_rosettes');
-    }
-
 
 }
