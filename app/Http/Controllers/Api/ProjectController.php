@@ -13,6 +13,7 @@ use App\Models\User;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\App;
 
 
 class ProjectController extends Controller
@@ -57,14 +58,16 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $project = Project::create($request->all());
-
-        $translation = new ProjectTranslation([
-            'name'=> $request->name,
-            'description'=> $request->description,
-            'locale'=> $request->getLocale()]);
-
-        $project->translation()->save($translation);
+        $project = new Project([
+            'quota' => $request->quota,
+            'point' => $request->point,
+            'experience' => $request->experience,
+        ]);
+        $project->fill([
+            'name:'. App::getLocale()    => $request->name,
+            'description:'. App::getLocale() => $request->description,
+        ]);
+        $project->save();
 
         if($request->user()->hasRole('student'))
         {
