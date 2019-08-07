@@ -14,7 +14,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Rosette query()
  * @mixin \Eloquent
  */
-class Rosette extends Model
+class RosetteTranslation extends Model
 {
     use LogsActivity;
 
