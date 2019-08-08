@@ -32,6 +32,7 @@ class Project extends Model
     protected $table = 'projects';
 
     public $translatedAttributes = ['name', 'description'];
+
     protected $fillable = [
         'quota',
         'start_date',
@@ -40,6 +41,13 @@ class Project extends Model
         'experience',
         'is_completed',
         'user_id'
+    ];
+
+    protected $appends = [
+        'flag_color',
+        'flag_text',
+        'flag_image',
+        'project_image',
     ];
 
     public function user()

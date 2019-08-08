@@ -68,6 +68,7 @@ class ProjectController extends Controller
 
         $project_name=$request->only('name');
         $project = Project::query()->whereTranslationLike('name',$project_name)->exists();
+
         if($project){
             return response()->error('project.name-valid');
         }
