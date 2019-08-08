@@ -20,7 +20,8 @@ class StepTranslation extends Model
 
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'locale'
     ];
 
     function step()
