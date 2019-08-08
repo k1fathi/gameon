@@ -20,7 +20,7 @@ class CreateProjectsTable extends Migration
             $table->Integer('point');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
-            $table->boolean('is_completed');
+            $table->boolean('is_completed')->nullable();
             $table->timestamps();
 
             $table->bigInteger('user_id')->unsigned();
@@ -34,7 +34,7 @@ class CreateProjectsTable extends Migration
         Schema::create('project_translations', function(Blueprint $table)
         {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->text('description')->nullable();
             $table->string('locale')->index();
 

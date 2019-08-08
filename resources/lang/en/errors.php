@@ -39,40 +39,9 @@ return [
     'post'         => [
         'not-found' => 'Post not found.',
     ],
-    'giftarea'     => [
-        'not-found' => 'Gift Area not found.',
-        'coupon'    => [
-            'depleted' => 'All coupons has been used.',
-        ],
-    ],
-    'period'       => [
-        'not-found'  => 'Period not found.',
-        'started_at' => 'Start date not found.',
-        'end_date'   => 'Period length couldn\'t be more than 10 days.',
-    ],
-    'pepclub'      => [
-        'not-found' => 'Pepclub not found.',
-    ],
-    'pepclubfan'   => [
-        'not-found' => 'Pepclub Fan not found.',
-    ],
-    'like'         => [
-        'not-found'    => 'Like not found.',
-        'liked-before' => 'Liked before.',
-    ],
-    'country'      => [
-        'not-found' => 'Country ID not found',
-    ],
-    'city'         => [
-        'not-found' => 'City ID not found',
-    ],
-    'usermoyra'    => [
-        'not-found' => 'Profile ID not found',
-    ],
-    'dailysetting' => [
-        'not-found' => 'Daily Setting not found',
-    ],
-    'dailyhealth'  => [
-        'not-found' => 'Daily Setting not found',
-    ],
+    'project'      => [
+        'not-found' => 'Project not found.',
+        'name-valid' => 'Name is valid',
+    ]
+
 ];

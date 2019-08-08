@@ -20,7 +20,6 @@ class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
      * @return array
      */
     public function index(Request $request)
@@ -49,7 +48,6 @@ class ProjectController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
      * @return void
      */
     public function create()
@@ -60,28 +58,26 @@ class ProjectController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
      * @param  \Illuminate\Http\Request $request
-     *
      * @return void
      */
     public function store(Request $request)
     {
-        $project = new Project([
-            'quota' => $request->quota,
-            'point' => $request->point,
-            'experience' => $request->experience,
-            'user_id' => $request->user()->id
-        ]);
-        $project->fill([
-            'name:'. App::getLocale()    => $request->name,
-            'description:'. App::getLocale() => $request->description,
-        ]);
+        /** @var User $user */
+        $user = $request->user();
+
+        $project_name=$request->only('name');
+        $project = Project::query()->whereTranslationLike('name',$project_name)->exists();
+        if($project){
+            return response()->error('project.name-valid');
+        }
+
+        $project = new Project($request->input());
+        $project->user()->associate($user);
         $project->save();
 
-        if($request->user()->hasRole('student'))
-        {
-            $request->user()->givePermissionTo([
+        if ($user->hasRole('student')) {
+            $user->givePermissionTo([
                 Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
                 Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
                 Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
@@ -89,8 +85,7 @@ class ProjectController extends Controller
             ]);
         }
 
-        if($request->user()->hasRole('teacher'))
-        {
+        if ($user->hasRole('teacher')) {
             $rosettes = Rosette::find($request->rosette_ids);
             $project->rosettes()->saveMany($rosettes);
 //
@@ -102,8 +97,7 @@ class ProjectController extends Controller
 
             $teachers = User::find($request->teacher_ids);
             $project->participants()->saveMany($teachers);
-            foreach ($teachers as $teacher)
-            {
+            foreach ($teachers as $teacher) {
                 $teacher->givePermissionTo([
                     Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
                     Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
@@ -118,46 +112,43 @@ class ProjectController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     *
+     * @param  int $id
      * @return array
      */
     public function show($id)
     {
         $project = Project::find($id);
 
-        return [
+
+        return response()->success($project->load(['members', 'rosettes', 'participants', 'steps', 'feed']));
+
+        /*return [
             "project" => $project,
             "members" => $project->getMembers(),
             "avatars" => $project->avatars()->get(),
             "rosettes"=> $project->rosettes()->get(),
             "steps" => $project->steps()->get()
-        ];
+        ];*/
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
+     * @param  int $id
      * @return void
      */
     public function edit($id)
     {
 
 
-        $project = Project::select('id', 'name', 'description','starr_date', 'finish_date', 'gold', 'exp', 'is_completed')->findOrFail($id);
+        $project = Project::select('id', 'name', 'description', 'starr_date', 'finish_date', 'gold', 'exp', 'is_completed')->findOrFail($id);
 
         return view('admin.projects.edit', compact('project'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int      $id
-     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return void
      */
     public function update(Request $request, $id)
@@ -181,9 +172,7 @@ class ProjectController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     *
+     * @param  int $id
      * @return void
      */
     public function destroy($id)
