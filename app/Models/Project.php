@@ -43,14 +43,12 @@ class Project extends Model
         'user_id'
     ];
 
-    protected $appends = [
-        'flag_color',
-        'flag_text',
+   /* protected $appends = [
         'project_image',
         'author',
         'likes',
         'views'
-    ];
+    ];*/
 
     public function user()
     {
@@ -67,7 +65,6 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class, 'project_user');
     }
-
 
     public function rosettes()
     {
@@ -97,6 +94,37 @@ class Project extends Model
     public function translation()
     {
         return $this->hasOne(ProjectTranslation::class);
+    }
+
+    public function getFlagColorAttribute($value)
+    {
+        return $value;
+    }
+
+    public function getFlagTextAttribute($value)
+    {
+        return $value;
+    }
+
+    //FIXME: change it to real mode
+    public function getProjectImageAttribute($value)
+    {
+        return $value;
+    }
+
+    public function getAuthorAttribute($value)
+    {
+        return $value;
+    }
+
+    public function getLikesAttribute($value)
+    {
+        return $value;
+    }
+
+    public function getProjectViewsAttribute($value)
+    {
+        return $value;
     }
 
     /**
