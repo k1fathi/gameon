@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProjectTranslation;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\Project;
@@ -12,6 +13,7 @@ use App\Models\User;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\App;
 
 
 class ProjectController extends Controller
@@ -19,14 +21,31 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return array
      */
     public function index(Request $request)
     {
         $projects = Project::all();
 
-        return response()->success('common.success');
+        $projects = $projects->map(function ($project) {
+            return [
+                'kulakcikColor' => 'pink.png',
+                'kulakcikText' => 'İlk 3',
+                'project_id' => $project->id,
+                'kulakcikImg' => $project->image()->value('original_url'),//'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvOpUOWrgMt3aBuFFQiChzN-0zK3PEbzASVXyg0mEmvhGM21YA',//$project->image()->value('original_url'),
+                'title' => $project->name,
+                'comment' => $project->description,
+                'startDate' => $project->start_date,
+                'endDate' => $project->end_date,
+                'author' => User::where('id', $project->user_id)->value('name'),
+                'likes' => 0,
+                'views' => 0,
+            ];
+        });
+
+        return response()->success('common.success', $projects);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -48,42 +67,53 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $project = Project::create($request->all());
+        $project = new Project([
+            'quota' => $request->quota,
+            'point' => $request->point,
+            'experience' => $request->experience,
+            'user_id' => $request->user()->id
+        ]);
+        $project->fill([
+            'name:'. App::getLocale()    => $request->name,
+            'description:'. App::getLocale() => $request->description,
+        ]);
+        $project->save();
 
-        $user = User::find($request->user_id);
+        if($request->user()->hasRole('student'))
+        {
+            $request->user()->givePermissionTo([
+                Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
+                Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
+                Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
+                Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
+            ]);
+        }
 
-        if($user->hasRole('teacher'))
+        if($request->user()->hasRole('teacher'))
         {
             $rosettes = Rosette::find($request->rosette_ids);
             $project->rosettes()->saveMany($rosettes);
-
-            $avatars = Avatar::find($request->avatar_ids);
-            $project->avatars()->saveMany($avatars);
+//
+//            $avatars = Avatar::find($request->avatar_ids);
+//            $project->avatars()->saveMany($avatars);
 
             $students = User::find($request->student_ids);
-            $this->studentSave($students, $project->id);
+            $project->participants()->saveMany($students);
 
             $teachers = User::find($request->teacher_ids);
-            $this->teacherSave($teachers, $project->id);
+            $project->participants()->saveMany($teachers);
+            foreach ($teachers as $teacher)
+            {
+                $teacher->givePermissionTo([
+                    Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
+                    Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
+                    Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
+                    Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
+                ]);
+            }
         }
 
         return response()->success('common.success');
-    }
-
-    public function studentSave($students, $project_id)
-    {
-        foreach ($students as $student)
-        {
-            $student->assignRole(Setting::PROJECT_STUDENT . $project_id);
-        }
-    }
-
-    public function teacherSave($teachers, $project_id)
-    {
-        foreach ($teachers as $teacher)
-        {
-            $teacher->assignRole(Setting::PROJECT_TEACHER  . $project_id);
-        }
     }
 
     /**

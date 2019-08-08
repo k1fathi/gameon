@@ -41,16 +41,11 @@ class Setting extends Model
      */
     protected $fillable = ['key', 'value'];
 
-    //Default Roles of project
-    const PROJECT_STUDENT = 'project_student';
-    const PROJECT_TEACHER = 'project_teacher';
-    const PROJECT_LEADER = 'project_leader';
-
     //Default Permissions of project
-    const PROJECT_CREATE = 'project_create';
-    const PROJECT_READ = 'project_read';
-    const PROJECT_UPDATE = 'project_update';
-    const PROJECT_DELETE = 'project_delete';
+    const PERMISSION_PROJECT_ACCEPT = 'project_accept';
+    const PERMISSION_PROJECT_DONE = 'project_done';
+    const PERMISSION_PROJECT_UPDATE = 'project_update';
+    const PERMISSION_PROJECT_DELETE = 'project_delete';
 
     const ROLE_STUDENT = 'student';
     const ROLE_TEACHER = 'teacher';

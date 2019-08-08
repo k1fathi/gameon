@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
@@ -27,32 +28,29 @@ class Project extends Model
 {
     use HasRoles;
     use LogsActivity;
+    use Translatable;
 
     protected $table = 'projects';
 
+    public $translatedAttributes = ['name','description'];
     protected $fillable = [
-        'name',
-        'description',
         'quota',
         'start_date',
-        'end_date',
+        'finish_date',
         'point',
         'experience',
-        'is_completed'
+        'is_completed',
+        'user_id'
     ];
 
-    public function getMembers()
+    public function participants()
     {
-        return [
-            'students' => User::role(Setting::PROJECT_STUDENT . '_' . $this->id)->get(),
-            'teachers' => User::role(Setting::PROJECT_TEACHER . '_' . $this->id)->get(),
-            'leader' => User::role(Setting::PROJECT_LEADER . '_' . $this->id)->get()
-        ];
+        return $this->belongsToMany(User::class);
     }
 
-    public function avatars()
+    public function rosettes()
     {
-        return $this->belongsToMany(Avatar::class);
+        return $this->belongsToMany(Rosette::class, 'projects_rosettes');
     }
 
     public function steps()
@@ -70,6 +68,11 @@ class Project extends Model
         return $this->morphMany(Feed::class, 'feedable');
     }
 
+    public function translation()
+    {
+        return $this->hasOne(ProjectTranslation::class);
+    }
+
     /**
      * Change activity log event description
      * @param string $eventName
@@ -85,14 +88,11 @@ class Project extends Model
         parent::boot();
 
         static::created(function ($model) {
-            Role::create(['name' => Setting::PROJECT_STUDENT . '_' . $model->id]);
-            Role::create(['name' => Setting::PROJECT_TEACHER . '_' . $model->id]);
-            Role::create(['name' => Setting::PROJECT_LEADER . '_' . $model->id]);
 
-            Permission::create(['name' => Setting::PROJECT_CREATE . '_' . $model->id]);
-            Permission::create(['name' => Setting::PROJECT_READ . '_' . $model->id]);
-            Permission::create(['name' => Setting::PROJECT_UPDATE . '_' . $model->id]);
-            Permission::create(['name' => Setting::PROJECT_DELETE . '_' . $model->id]);
+            Permission::create(['name' => Setting::PERMISSION_PROJECT_ACCEPT . '_' . $model->id]);
+            Permission::create(['name' => Setting::PERMISSION_PROJECT_DONE . '_' . $model->id]);
+            Permission::create(['name' => Setting::PERMISSION_PROJECT_UPDATE . '_' . $model->id]);
+            Permission::create(['name' => Setting::PERMISSION_PROJECT_DELETE . '_' . $model->id]);
         });
 
         static::deleting(function ($model) {
