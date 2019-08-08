@@ -9,7 +9,6 @@ use Spatie\Permission\Traits\HasRoles;
 
 /**
  * App\Models\Project
- *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Avatar[] $avatars
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Feed[] $feeds
@@ -32,25 +31,50 @@ class Project extends Model
 
     protected $table = 'projects';
 
-    public $translatedAttributes = ['name','description'];
+    public $translatedAttributes = ['name', 'description'];
+
     protected $fillable = [
         'quota',
         'start_date',
-        'finish_date',
+        'end_date',
         'point',
         'experience',
         'is_completed',
         'user_id'
     ];
 
-    public function participants()
+    protected $appends = [
+        'flag_color',
+        'flag_text',
+        'flag_image',
+        'project_image',
+    ];
+
+    public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
+
+    public function claims()
+    {
+        //return $this->belongsToMany(User::class, 'project_claim');
+        return null;
+    }
+
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'project_user');
+    }
+
 
     public function rosettes()
     {
-        return $this->belongsToMany(Rosette::class, 'projects_rosettes');
+        return $this->belongsToMany(Rosette::class, 'project_rosette');
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     public function steps()
