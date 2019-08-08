@@ -27,19 +27,15 @@ class ProjectController extends Controller
         $projects = Project::all();
 
         $projects = $projects->map(function ($project) {
-            return [
-                'kulakcikColor' => 'pink.png',
-                'kulakcikText' => 'İlk 3',
-                'project_id' => $project->id,
-                'kulakcikImg' => $project->image()->value('original_url'),//'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvOpUOWrgMt3aBuFFQiChzN-0zK3PEbzASVXyg0mEmvhGM21YA',//$project->image()->value('original_url'),
-                'title' => $project->name,
-                'comment' => $project->description,
-                'startDate' => $project->start_date,
-                'endDate' => $project->end_date,
-                'author' => User::where('id', $project->user_id)->value('name'),
-                'likes' => 0,
-                'views' => 0,
-            ];
+
+            $project->flag_color='pink.png';
+            $project->flag_text = 'ilk 3';
+            $project->project_image = $project->image()->value('original_url');
+            $project->author = $project->user()->value('name');
+            $project->likes = 0;
+            $project->views = 0;
+
+            return $project;
         });
 
         return response()->success('common.success', $projects);
