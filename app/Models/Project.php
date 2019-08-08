@@ -46,8 +46,10 @@ class Project extends Model
     protected $appends = [
         'flag_color',
         'flag_text',
-        'flag_image',
         'project_image',
+        'author',
+        'likes',
+        'views'
     ];
 
     public function user()
@@ -106,6 +108,11 @@ class Project extends Model
     {
         return __CLASS__ . " model has been {$eventName}";
     }
+
+//    public function getFlagColorAttribute()
+//    {
+//        return 5;
+//    }
 
     public static function boot()
     {
