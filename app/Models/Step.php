@@ -19,6 +19,8 @@ class Step extends Model
     use LogsActivity;
     use Translatable;
 
+    public $translatedAttributes = ['name', 'description'];
+
     protected $fillable = [
         'step_no',
         'is_completed',
