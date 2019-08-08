@@ -28,7 +28,7 @@ class CreateFriendsTable extends Migration
         Schema::create('friend_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('category')->nullable();
-            $table->json('label')->nullable();
+            $table->text('label')->nullable();
             $table->string('locale')->index();
 
             $table->bigInteger('friends_id')->unsigned();
