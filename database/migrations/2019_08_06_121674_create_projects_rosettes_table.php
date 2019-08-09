@@ -13,7 +13,7 @@ class CreateProjectsRosettesTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects_rosettes', function (Blueprint $table) {
+        Schema::create('project_rosette', function (Blueprint $table) {
 
             $table->bigInteger('project_id')->unsigned();
             $table->foreign('project_id')
@@ -38,6 +38,6 @@ class CreateProjectsRosettesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projects_accessories');
+        Schema::dropIfExists('project_rosette');
     }
 }
