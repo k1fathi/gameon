@@ -20,8 +20,8 @@ class CreateRosettesTable extends Migration
 
         Schema::create('rosette_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->json('name');
-            $table->json('description')->nullable();
+            $table->string('name');
+            $table->text('description')->nullable();
             $table->string('locale')->index();
 
             $table->bigInteger('rosette_id')->unsigned();

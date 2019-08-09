@@ -51,7 +51,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
@@ -64,6 +64,18 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'images' => [
+            'driver' => env('FILE_DRIVER', 'local'),
+            'project_id' => env('GCS_PROJECT'),
+            'bucket' => env('GCS_BUCKET', env('AWS_BUCKET')),
+            'path_prefix' => env('GCS_PREFIX', null) . '/images',
+            'key' => env('AWS_KEY'),
+            'secret' => env('AWS_SECRET'),
+            'region' => env('AWS_REGION'),
+            'root' => env('FILE_DRIVER', 'local') == 'local' ? public_path('images') : 'images',
+            'url' => env('FILE_DRIVER', 'local') == 'local' ? env('APP_URL') . '/images' : env('CDN_URL'),
+            'visibility' => 'public',
+        ],
     ],
 
 ];

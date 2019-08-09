@@ -43,6 +43,12 @@ class Project extends Model
         'user_id'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'translations',
+    ];
+
    /* protected $appends = [
         'project_image',
         'author',
@@ -69,11 +75,6 @@ class Project extends Model
     public function rosettes()
     {
         return $this->belongsToMany(Rosette::class, 'project_rosette');
-    }
-
-    public function participants()
-    {
-        return $this->belongsToMany(User::class);
     }
 
     public function steps()
