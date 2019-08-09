@@ -27,17 +27,9 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        //$image=Image::make(['public/girl_avatar.jpg'])->resize(100, 100)->insert('public/project_thumbnail.png');
-        $image=Image::make(['public/girl_avatar.jpg']);
-
-        $projects = Project::query();
-
-        foreach($projects as $project){
-            $project->load('image')->save($image);
-            $project->load('rosette');
-        }
-
-
+        $projects = Project::with( 'steps', 'rosettes')->with(['members.roles' => function($role){
+            $role->where('name','teacher')->orWhere('name','student')->select('name');
+        }]);
 
         return response()->paginate($projects);
     }
@@ -125,7 +117,7 @@ class ProjectController extends Controller
         $project = Project::find($id);
 
 
-        return response()->success($project->load(['members', 'rosettes', 'participants', 'steps', 'feed']));
+        return response()->success($project->load(['members', 'rosettes',  'steps']));
 
         /*return [
             "project" => $project,
