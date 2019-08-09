@@ -44,6 +44,8 @@ class Rosette extends Model
         'created_at',
         'updated_at',
         'translations',
+        'user_id',
+        'pivot'
     ];
 
     public function image()
