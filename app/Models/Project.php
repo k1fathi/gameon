@@ -32,6 +32,7 @@ class Project extends Model
     protected $table = 'projects';
 
     public $translatedAttributes = ['name', 'description'];
+
     protected $fillable = [
         'quota',
         'start_date',
@@ -41,6 +42,19 @@ class Project extends Model
         'is_completed',
         'user_id'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'translations',
+    ];
+
+   /* protected $appends = [
+        'project_image',
+        'author',
+        'likes',
+        'views'
+    ];*/
 
     public function user()
     {
@@ -58,15 +72,9 @@ class Project extends Model
         return $this->belongsToMany(User::class, 'project_user');
     }
 
-
     public function rosettes()
     {
         return $this->belongsToMany(Rosette::class, 'project_rosette');
-    }
-
-    public function participants()
-    {
-        return $this->belongsToMany(User::class);
     }
 
     public function steps()
@@ -89,6 +97,37 @@ class Project extends Model
         return $this->hasOne(ProjectTranslation::class);
     }
 
+    public function getFlagColorAttribute($value)
+    {
+        return $value;
+    }
+
+    public function getFlagTextAttribute($value)
+    {
+        return $value;
+    }
+
+    //FIXME: change it to real mode
+    public function getProjectImageAttribute($value)
+    {
+        return $value;
+    }
+
+    public function getAuthorAttribute($value)
+    {
+        return $value;
+    }
+
+    public function getLikesAttribute($value)
+    {
+        return $value;
+    }
+
+    public function getProjectViewsAttribute($value)
+    {
+        return $value;
+    }
+
     /**
      * Change activity log event description
      * @param string $eventName
@@ -98,6 +137,11 @@ class Project extends Model
     {
         return __CLASS__ . " model has been {$eventName}";
     }
+
+//    public function getFlagColorAttribute()
+//    {
+//        return 5;
+//    }
 
     public static function boot()
     {

@@ -47,3 +47,16 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::post('answer', 'Api\QuestionController@giveAnswer');
 
 });
+
+
+Route::post('image', function (Request $request) {
+
+
+    if ($request->hasFile('image')) {
+        $image=new \App\Models\Image([
+            'image' => $request->file('image'),
+        ]);
+        $image->save();
+    }
+    return response()->success('common.success');
+});

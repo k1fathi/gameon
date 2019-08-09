@@ -3,17 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use App\Models\ProjectTranslation;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Rosette;
-use App\Models\Avatar;
 use App\Models\User;
+use Intervention\Image\ImageManager;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\App;
+use vendor\project\StatusTest;
+
 
 
 class ProjectController extends Controller
@@ -24,25 +27,19 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $projects = Project::all();
+        //$image=Image::make(['public/girl_avatar.jpg'])->resize(100, 100)->insert('public/project_thumbnail.png');
+        $image=Image::make(['public/girl_avatar.jpg']);
 
-        $projects = $projects->map(function ($project) {
-            return [
-                'kulakcikColor' => 'pink.png',
-                'kulakcikText' => 'İlk 3',
-                'project_id' => $project->id,
-                'kulakcikImg' => $project->image()->value('original_url'),//'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvOpUOWrgMt3aBuFFQiChzN-0zK3PEbzASVXyg0mEmvhGM21YA',//$project->image()->value('original_url'),
-                'title' => $project->name,
-                'comment' => $project->description,
-                'startDate' => $project->start_date,
-                'endDate' => $project->end_date,
-                'author' => User::where('id', $project->user_id)->value('name'),
-                'likes' => 0,
-                'views' => 0,
-            ];
-        });
+        $projects = Project::query();
 
-        return response()->success('common.success', $projects);
+        foreach($projects as $project){
+            $project->load('image')->save($image);
+            $project->load('rosette');
+        }
+
+
+
+        return response()->paginate($projects);
     }
 
 
@@ -67,7 +64,8 @@ class ProjectController extends Controller
         $user = $request->user();
 
         $project_name=$request->only('name');
-        $project = Project::query()->whereTranslationLike('name',$project_name)->exists();
+        $project = Project::whereTranslationLike('name',$project_name)->exists();
+
         if($project){
             return response()->error('project.name-valid');
         }
@@ -76,7 +74,13 @@ class ProjectController extends Controller
         $project->user()->associate($user);
         $project->save();
 
-        if ($user->hasRole('student')) {
+        if ($request->hasFile('image')) {
+            $project->image()->save(new Image([
+                'image' => $request->file('image'),
+            ]));
+        }
+
+       /* if ($user->hasRole('student')) {
             $user->givePermissionTo([
                 Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
                 Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
@@ -105,7 +109,7 @@ class ProjectController extends Controller
                     Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
                 ]);
             }
-        }
+        }*/
 
         return response()->success('common.success');
     }

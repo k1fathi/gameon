@@ -21,6 +21,12 @@ pipelines:
           - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
           # push the new Docker image to the Docker registry
           - docker push $IMAGE_NAME
+    development:
+      - step:
+          services:
+            - ssh
+          script:
+
 definitions:
   services:
     docker:

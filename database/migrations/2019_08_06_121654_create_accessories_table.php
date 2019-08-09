@@ -19,8 +19,8 @@ class CreateAccessoriesTable extends Migration
         });
         Schema::create('accessory_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->json('name');
-            $table->json('description')->nullable();
+            $table->string('name');
+            $table->text('description')->nullable();
             $table->string('locale')->index();
 
             $table->bigInteger('accessory_id')->unsigned();
