@@ -42,6 +42,6 @@ class CreateRosettesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('rosette_translations');
-        Schema::dropIfExists('avatars');
+        Schema::dropIfExists('rosettes');
     }
 }
