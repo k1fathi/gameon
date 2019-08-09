@@ -80,7 +80,7 @@ class ProjectController extends Controller
             ]));
         }
 
-       /* if ($user->hasRole('student')) {
+        if ($user->hasRole('student')) {
             $user->givePermissionTo([
                 Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
                 Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
@@ -97,19 +97,20 @@ class ProjectController extends Controller
 //            $project->avatars()->saveMany($avatars);
 
             $students = User::find($request->student_ids);
-            $project->participants()->saveMany($students);
+            $project->members()->saveMany($students);
 
             $teachers = User::find($request->teacher_ids);
-            $project->participants()->saveMany($teachers);
-            foreach ($teachers as $teacher) {
-                $teacher->givePermissionTo([
-                    Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
-                    Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
-                    Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
-                    Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
-                ]);
-            }
-        }*/
+            $project->members()->saveMany($teachers);
+
+//            foreach ($teachers as $teacher) {
+//                $teacher->givePermissionTo([
+//                    Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
+//                    Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
+//                    Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
+//                    Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
+//                ]);
+//            }
+        }
 
         return response()->success('common.success');
     }
