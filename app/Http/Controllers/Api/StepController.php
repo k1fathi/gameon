@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Project;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,22 +11,28 @@ class StepController extends Controller
 {
     public function store(Request $request)
     {
-        $project = Project::where('id',$request->project_id)->first();
+        /** @var User $user */
+        $user = $request->user();
 
-        $step = new Step();
-        $step->ordinal = $request->ordinal;
-        $step->name = $request->name;
-        $step->description = $request->description;
+        $step_no=$request->only('name');
+        $step = Step::query()->whereTranslationLike('name',$step_no)->exists();
 
+        if($step){
+            return response()->error('project.name-valid');
+        }
+
+        $project = Project::find($request->project_id);
+
+        $step = new Step($request->input());
         $project->steps()->save($step);
 
-        return response()->json(['name' => 'success', 'status' => '200']);
+        return response()->success('common.success');
     }
 
-    public function destroy($id, Request $request)
+    public function destroy($id)
     {
-        $step = Step::where('project_id',$id)->where('ordinal',$request->ordinal)->delete();
+        Step::destroy($id);
 
-        return response()->json(['name' => 'success', 'status' => '200']);
+        return response()->success('common.success');
     }
 }

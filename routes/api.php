@@ -37,6 +37,8 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     //Project step store
     Route::resource('step', 'Api\StepController');
 
+    Route::resource('rosette', 'Api\RosetteController');
+
     //Sorucevap, random soru al
     Route::get('question/get', 'Api\QuestionController@getQuestion');
 

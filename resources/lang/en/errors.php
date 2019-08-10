@@ -3,8 +3,8 @@
 return [
     'common'       => [
         'error'       => 'Error',
-        'save_error'  => 'Unable to save an error occurred',
-        'input_error' => 'Input data an error occurred',
+        'save-error'  => 'Unable to save an error occurred',
+        'input-error' => 'Input data an error occurred',
         'not-found'   => 'Object not found',
         'bad-request' => 'The 400 Bad Request error',
     ],

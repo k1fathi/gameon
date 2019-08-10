@@ -25,4 +25,10 @@ class Step extends Model
         'step_no',
         'is_completed',
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'translations',
+    ];
 }
