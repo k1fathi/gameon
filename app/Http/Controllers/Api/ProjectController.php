@@ -3,20 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ProjectRequest;
 use App\Models\Image;
-use App\Models\ProjectTranslation;
 use App\Models\Setting;
-use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Rosette;
 use App\Models\User;
-use Intervention\Image\ImageManager;
-
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\App;
-use vendor\project\StatusTest;
-
 
 
 class ProjectController extends Controller
@@ -25,24 +17,18 @@ class ProjectController extends Controller
      * Display a listing of the resource.
      * @return array
      */
-    public function index(Request $request)
+    public function index()
     {
-        $projects = Project::with( 'steps', 'rosettes')->with(['members.roles' => function($role){
-            $role->where('name','teacher')->orWhere('name','student')->select('name');
-        }]);
+        $projects = Project::
+        with('steps', 'rosettes', 'image')
+            ->with(['members.roles' => function ($role) {
+                $role->where('name', 'teacher')->orWhere('name', 'student')->select('name');
+            }]);
 
+        if (!$projects) {
+            return response()->error('error.not-found');
+        }
         return response()->paginate($projects);
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     * @return void
-     */
-    public function create()
-    {
-
-        return view('admin.projects.create');
     }
 
     /**
@@ -50,15 +36,15 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return void
      */
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
         /** @var User $user */
         $user = $request->user();
 
-        $project_name=$request->only('name');
-        $project = Project::whereTranslationLike('name',$project_name)->exists();
+        $project_name = $request->only('name');
+        $project = Project::whereTranslationLike('name', $project_name)->exists();
 
-        if($project){
+        if ($project) {
             return response()->error('project.name-valid');
         }
 
@@ -117,7 +103,7 @@ class ProjectController extends Controller
         $project = Project::find($id);
 
 
-        return response()->success($project->load(['members', 'rosettes',  'steps']));
+        return response()->success($project->load(['members', 'rosettes', 'steps']));
 
         /*return [
             "project" => $project,
@@ -129,42 +115,22 @@ class ProjectController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     * @param  int $id
-     * @return void
-     */
-    public function edit($id)
-    {
-
-
-        $project = Project::select('id', 'name', 'description', 'starr_date', 'finish_date', 'gold', 'exp', 'is_completed')->findOrFail($id);
-
-        return view('admin.projects.edit', compact('project'));
-    }
-
-    /**
      * Update the specified resource in storage.
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
      * @return void
      */
-    public function update(Request $request, $id)
+    public function update(ProjectRequest $request, $id)
     {
-        $this->validate(
-            $request,
-            [
-                'name' => 'required',
-                'description' => 'required|string'
-            ]
-        );
+        $project = Project::find($id);
 
-        $data = $request->all();
+        if (!$project) {
+            return response()->error('error.not-found');
+        }
 
-        $project = Project::findOrFail($id);
-        $project->update($data);
+        $project->update($request->input());
 
-
-        return redirect('admin/projects')->with('flash_message', 'Project updated!');
+        return response()->success('common.success');
     }
 
     /**
@@ -174,7 +140,12 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        Project::destroy($id);
+        $project = Project::find($id);
+
+        if (!$project) {
+            return response()->error('error.not-found');
+        }
+        $project->delete();
 
         return response()->success('common.success');
     }

@@ -31,7 +31,7 @@ class ResponseServiceProvider extends ServiceProvider
             ], $status, $headers, $options);
         });
 
-        $factory->macro('error', function ($code, $parameters = [], $extras = [], $status = 400, array $headers = [], $options = 0) use ($factory) {
+        $factory->macro('error', function ($code, $parameters = [], $extras = [], $status = 404, array $headers = [], $options = 0) use ($factory) {
             return response()->json([
                     'code'    => $code,
                     'title'   => trans('errors.common.error'),
