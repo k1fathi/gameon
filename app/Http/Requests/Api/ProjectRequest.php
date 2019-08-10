@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Requests\Api;
-
-
-use Illuminate\Support\Facades\App;
+use App\Http\Requests\Api;
 
 class ProjectRequest extends Request
 {
@@ -14,7 +12,7 @@ class ProjectRequest extends Request
     public function rules()
     {
         return [
-            'name:' . App::getLocale() => 'bail|required|unique:|max:255',
+            'name'=> 'required|max:255',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
         ];

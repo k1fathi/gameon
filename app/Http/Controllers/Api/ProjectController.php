@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ProjectRequest;
 use App\Models\Image;
+use App\Models\Permission;
 use App\Models\Setting;
 use App\Models\Project;
 use App\Models\Rosette;
 use App\Models\User;
+use http\Env\Response;
+use Spatie\Permission\PermissionRegistrar;
 
 
 class ProjectController extends Controller
@@ -19,8 +22,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::
-        with('steps', 'rosettes', 'image')
+        $projects = Project::with('steps', 'rosettes', 'image')
             ->with(['members.roles' => function ($role) {
                 $role->where('name', 'teacher')->orWhere('name', 'student')->select('name');
             }]);
@@ -47,47 +49,49 @@ class ProjectController extends Controller
         if ($project) {
             return response()->error('project.name-valid');
         }
+        try {
+            $project = new Project($request->input());
+            $project->user()->associate($user);
+            $project->save();
 
-        $project = new Project($request->input());
-        $project->user()->associate($user);
-        $project->save();
-
-        if ($request->hasFile('image')) {
-            $project->image()->save(new Image([
-                'image' => $request->file('image'),
-            ]));
-        }
-
-        if ($user->hasRole('student')) {
+            if ($request->hasFile('image')) {
+                $project->image()->save(new Image([
+                    'image' => $request->file('image'),
+                ]));
+            }
+            $user->forgetCachedPermissions();
+            //Add permission to project creator
             $user->givePermissionTo([
-                Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
-                Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
-                Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
-                Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
+                Setting::PERMISSION_PROJECT_ACCEPT . '-' . $project->id,
+                Setting::PERMISSION_PROJECT_DONE . '-' . $project->id,
+                Setting::PERMISSION_PROJECT_DELETE . '-' . $project->id,
+                Setting::PERMISSION_PROJECT_UPDATE . '-' . $project->id,
             ]);
-        }
 
-        if ($user->hasRole('teacher')) {
-            $rosettes = Rosette::find($request->rosette_ids);
-            $project->rosettes()->saveMany($rosettes);
-//
-//            $avatars = Avatar::find($request->avatar_ids);
-//            $project->avatars()->saveMany($avatars);
+            $rosettes = Rosette::whereIn('id',$request->rosette_ids)->get();
+            if($rosettes){
+                //FIXME: add rosette to project
+                $project->rosettes()->sync($rosettes);
+            };
+            if ($user->hasRole('teacher')) {
 
-            $students = User::find($request->student_ids);
-            $project->members()->saveMany($students);
+                $students = User::find($request->student_ids);
+                $project->members()->sync($students);
 
-            $teachers = User::find($request->teacher_ids);
-            $project->members()->saveMany($teachers);
+                $teachers = User::find($request->teacher_ids);
+                $project->members()->saveMany($teachers);
 
 //            foreach ($teachers as $teacher) {
 //                $teacher->givePermissionTo([
-//                    Setting::PERMISSION_PROJECT_ACCEPT . '_' . $project->id,
-//                    Setting::PERMISSION_PROJECT_DONE . '_' . $project->id,
-//                    Setting::PERMISSION_PROJECT_DELETE . '_' . $project->id,
-//                    Setting::PERMISSION_PROJECT_UPDATE . '_' . $project->id,
+//                    Setting::PERMISSION_PROJECT_ACCEPT . '-' . $project->id,
+//                    Setting::PERMISSION_PROJECT_DONE . '-' . $project->id,
+//                    Setting::PERMISSION_PROJECT_DELETE . '-' . $project->id,
+//                    Setting::PERMISSION_PROJECT_UPDATE . '-' . $project->id,
 //                ]);
 //            }
+            }
+        } catch (\Exception $exception) {
+            return response()->error($exception->getMessage());
         }
 
         return response()->success('common.success');
@@ -101,17 +105,11 @@ class ProjectController extends Controller
     public function show($id)
     {
         $project = Project::find($id);
+        if (!$project) {
+            return response()->error('error.not-found');
+        }
 
-
-        return response()->success($project->load(['members', 'rosettes', 'steps']));
-
-        /*return [
-            "project" => $project,
-            "members" => $project->getMembers(),
-            "avatars" => $project->avatars()->get(),
-            "rosettes"=> $project->rosettes()->get(),
-            "steps" => $project->steps()->get()
-        ];*/
+        return response()->success($project->load(['members', 'rosettes', 'steps', 'image']));
     }
 
     /**
@@ -123,7 +121,6 @@ class ProjectController extends Controller
     public function update(ProjectRequest $request, $id)
     {
         $project = Project::find($id);
-
         if (!$project) {
             return response()->error('error.not-found');
         }
@@ -141,10 +138,10 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         $project = Project::find($id);
-
         if (!$project) {
             return response()->error('error.not-found');
         }
+
         $project->delete();
 
         return response()->success('common.success');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Guard;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -34,6 +35,7 @@ class Project extends Model
     public $translatedAttributes = ['name', 'description'];
 
     protected $fillable = [
+        'id',
         'quota',
         'start_date',
         'end_date',
@@ -147,23 +149,42 @@ class Project extends Model
     {
         parent::boot();
 
-        static::created(function ($model) {
+        parent::creating(function (self $model) {
+            if (is_null($model->id)) {
+                //$model->id = str_replace(".", "", microtime(true));
+                $model->id = abs(crc32(uniqid()));
+            }
+        });
 
-            Permission::create(['name' => Setting::PERMISSION_PROJECT_ACCEPT . '_' . $model->id]);
-            Permission::create(['name' => Setting::PERMISSION_PROJECT_DONE . '_' . $model->id]);
-            Permission::create(['name' => Setting::PERMISSION_PROJECT_UPDATE . '_' . $model->id]);
-            Permission::create(['name' => Setting::PERMISSION_PROJECT_DELETE . '_' . $model->id]);
+            static::created(function (self $model) {
+
+            Permission::create([
+                'name' => Setting::PERMISSION_PROJECT_ACCEPT . '-' . $model->id,
+                'guard_name' => Guard::getDefaultName($model),
+            ]);
+            Permission::create([
+                'name' => Setting::PERMISSION_PROJECT_DONE . '-' . $model->id,
+                'guard_name' => Guard::getDefaultName($model),
+            ]);
+            Permission::create([
+                'name' => Setting::PERMISSION_PROJECT_UPDATE . '-' . $model->id,
+                'guard_name' => Guard::getDefaultName($model),
+            ]);
+            Permission::create([
+                'name' => Setting::PERMISSION_PROJECT_DELETE . '-' . $model->id,
+                'guard_name' => Guard::getDefaultName($model),
+            ]);
         });
 
         static::deleting(function ($model) {
-//            Role::where('name',Setting::PROJECT_STUDENT . '_' . $model->id)->first()->delete();
-//            Role::where('name',Setting::PROJECT_TEACHER . '_' . $model->id)->first()->delete();
-//            Role::where('name',Setting::PROJECT_LEADER  . '_' . $model->id)->first()->delete();
+//            Role::where('name',Setting::PROJECT_STUDENT . '-' . $model->id)->first()->delete();
+//            Role::where('name',Setting::PROJECT_TEACHER . '-' . $model->id)->first()->delete();
+//            Role::where('name',Setting::PROJECT_LEADER  . '-' . $model->id)->first()->delete();
 //
-//            Permission::where('name',Setting::PROJECT_CREATE  . '_' . $model->id)->first()->delete();
-//            Permission::where('name',Setting::PROJECT_READ  . '_' . $model->id)->first()->delete();
-//            Permission::where('name',Setting::PROJECT_UPDATE  . '_' . $model->id)->first()->delete();
-//            Permission::where('name',Setting::PROJECT_DELETE  . '_' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_CREATE  . '-' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_READ  . '-' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_UPDATE  . '-' . $model->id)->first()->delete();
+//            Permission::where('name',Setting::PROJECT_DELETE  . '-' . $model->id)->first()->delete();
         });
     }
 }

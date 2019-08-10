@@ -42,10 +42,10 @@ class Setting extends Model
     protected $fillable = ['key', 'value'];
 
     //Default Permissions of project
-    const PERMISSION_PROJECT_ACCEPT = 'project_accept'; // project creator
-    const PERMISSION_PROJECT_DONE = 'project_done';
-    const PERMISSION_PROJECT_UPDATE = 'project_update';
-    const PERMISSION_PROJECT_DELETE = 'project_delete';
+    const PERMISSION_PROJECT_ACCEPT = 'project-accept'; // project creator
+    const PERMISSION_PROJECT_DONE = 'project-done';
+    const PERMISSION_PROJECT_UPDATE = 'project-update';
+    const PERMISSION_PROJECT_DELETE = 'project-delete';
 
     const ROLE_STUDENT = 'student';
     const ROLE_TEACHER = 'teacher';
