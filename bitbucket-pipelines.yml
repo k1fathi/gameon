@@ -23,9 +23,14 @@ pipelines:
           - docker push $IMAGE_NAME
     development:
       - step:
-          services:
-            - ssh
-          script:
+             name: Deploy to production
+             deployment: production
+             script:
+               - pipe: atlassian/ssh-run:0.2.2
+                 variables:
+                   SSH_USER: 'root'
+                   SERVER: '178.128.68.183'
+                   COMMAND: './deployGameOn.sh'
 
 definitions:
   services:
