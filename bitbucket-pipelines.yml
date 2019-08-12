@@ -38,7 +38,7 @@ pipelines:
                    SSH_USER: root
                    SERVER: 178.128.68.183
                    COMMAND: ./deployGameOn.sh
-                   SSH_KEY: $my_ssh_key
+                   #SSH_KEY: $my_ssh_key
 
 definitions:
   services:
