@@ -8,30 +8,37 @@ image: atlassian/default-image:2
 pipelines:
   #default:
   branches:
-    master:
-    - step:
-        services:
-          - docker
-        script: # Modify the commands below to build your repository.
-          # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
-          - export IMAGE_NAME=k1fathi33/gameon:$BITBUCKET_COMMIT
-          # build the Docker image (this will use the Dockerfile in the root of the repo)
-          - docker build -t $IMAGE_NAME .
-          # authenticate with the Docker Hub registry
-          - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
-          # push the new Docker image to the Docker registry
-          - docker push $IMAGE_NAME
+    # master:
+    # - step:
+        # services:
+          # - docker
+        # script: # Modify the commands below to build your repository.
+          # # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
+          # - export IMAGE_NAME=k1fathi33/gameon:$BITBUCKET_COMMIT
+          # # build the Docker image (this will use the Dockerfile in the root of the repo)
+          # - docker build -t $IMAGE_NAME .
+          # # authenticate with the Docker Hub registry
+          # - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+          # # push the new Docker image to the Docker registry
+          # - docker push $IMAGE_NAME
     development:
-     - step:
+      # - step:
+            # caches:
+              # - composer
+            # script:
+              # - apt-get update && apt-get install -y unzip
+              # - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+              # - composer install --no-dev
+      - step:
              name: Deploy to production
              deployment: production
              script:
                - pipe: atlassian/ssh-run:0.2.2
                  variables:
-                   SSH_USER: 'root'
-                   SERVER: '178.128.68.183'
-                   COMMAND: './deployGameOn.sh'
-                   SSH_KEY: '178.128.68.183' # Optional
+                   SSH_USER: root
+                   SERVER: 178.128.68.183
+                   COMMAND: ./deployGameOn.sh
+                   SSH_KEY: my_ssh_key
 
 definitions:
   services:
