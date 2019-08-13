@@ -68,9 +68,8 @@ class ProjectController extends Controller
                 Setting::PERMISSION_PROJECT_UPDATE . '-' . $project->id,
             ]);
 
-            $rosettes = Rosette::whereIn('id',$request->rosette_ids)->get();
+            $rosettes = Rosette::whereIn('id',$request->input('rosette_ids'))->get();
             if($rosettes){
-                //FIXME: add rosette to project
                 $project->rosettes()->sync($rosettes);
             };
             if ($user->hasRole('teacher')) {

@@ -32,7 +32,10 @@ class Project extends Model
 
     protected $table = 'projects';
 
-    public $translatedAttributes = ['name', 'description'];
+    public $translatedAttributes = [
+        'name',
+        'description'
+    ];
 
     protected $fillable = [
         'id',
@@ -42,7 +45,6 @@ class Project extends Model
         'point',
         'experience',
         'is_completed',
-        'user_id'
     ];
 
     protected $hidden = [
