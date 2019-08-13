@@ -35,8 +35,8 @@ pipelines:
              script:
                - pipe: atlassian/ssh-run:0.2.2
                  variables:
-                   SSH_USER: root
-                   SERVER: 178.128.68.183
+                   SSH_USER: $HOST_USER
+                   SERVER: $HOST_ADDRESS
                    COMMAND: ./bin/deploygameon
                    #SSH_KEY: $my_ssh_key
 
