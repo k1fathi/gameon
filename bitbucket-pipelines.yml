@@ -30,14 +30,14 @@ pipelines:
                #- curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
                #- composer install --no-dev
        - step:
-             name: Deploy to production
-             deployment: production
+             name: Deploy to staging
+             deployment: staging
              script:
                - pipe: atlassian/ssh-run:0.2.2
                  variables:
                    SSH_USER: $HOST_USER
                    SERVER: $HOST_ADDRESS
-                   COMMAND: ./bin/deploygameon
+                   COMMAND: $DEPLOY
                    #SSH_KEY: $my_ssh_key
 
 definitions:
