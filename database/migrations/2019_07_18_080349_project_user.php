@@ -13,6 +13,7 @@ class ProjectUser extends Migration
     public function up()
     {
         Schema::create('project_user', function (Blueprint $table) {
+            $table->boolean('is_claim')->nullable();
             $table->timestamps();
 
             $table->bigInteger('project_id')->unsigned();

@@ -53,27 +53,26 @@ class Project extends Model
         'translations',
     ];
 
-   /* protected $appends = [
-        'project_image',
-        'author',
-        'likes',
-        'views'
-    ];*/
+    /* protected $appends = [
+         'project_image',
+         'author',
+         'likes',
+         'views'
+     ];*/
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function claims()
-    {
-        //return $this->belongsToMany(User::class, 'project_claim');
-        return null;
-    }
-
     public function members()
     {
-        return $this->belongsToMany(User::class, 'project_user');
+        return $this->belongsToMany(User::class, 'project_user')->whereNotNull('is_claim');
+    }
+
+    public function claims()
+    {
+        return $this->belongsToMany(User::class, 'project_user')->whereNull('is_claim');
     }
 
     public function rosettes()
@@ -158,7 +157,7 @@ class Project extends Model
             }
         });
 
-            static::created(function (self $model) {
+        static::created(function (self $model) {
 
             Permission::create([
                 'name' => Setting::PERMISSION_PROJECT_ACCEPT . '-' . $model->id,

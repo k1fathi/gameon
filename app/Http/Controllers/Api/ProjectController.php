@@ -22,7 +22,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('steps', 'rosettes', 'image')
+        $projects = Project::with('steps', 'rosettes', 'members', 'claims', 'image')
             ->with(['members.roles' => function ($role) {
                 $role->where('name', 'teacher')->orWhere('name', 'student')->select('name');
             }]);
@@ -68,8 +68,8 @@ class ProjectController extends Controller
                 Setting::PERMISSION_PROJECT_UPDATE . '-' . $project->id,
             ]);
 
-            $rosettes = Rosette::whereIn('id',$request->input('rosette_ids'))->get();
-            if($rosettes){
+            $rosettes = Rosette::whereIn('id', $request->input('rosette_ids'))->get();
+            if ($rosettes) {
                 $project->rosettes()->sync($rosettes);
             };
             if ($user->hasRole('teacher')) {
