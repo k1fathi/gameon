@@ -78,7 +78,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    GameOn! Platform
+                    GameOn Platform
                 </div>
             </div>
         </div>
