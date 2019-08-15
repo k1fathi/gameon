@@ -6,24 +6,25 @@ class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
      * @return void
      */
     public function run()
     {
-        \App\Models\User::create([
-            'email'    => 'admin@sarente.com',
+        $role = app(\Spatie\Permission\PermissionRegistrar::class)
+            ->getRoleClass()::findByName('admin', 'web');
+
+        $admin = factory(\App\Models\User::class)->create([
+            'email' => 'admin@sarente.com',
             'password' => \Illuminate\Support\Facades\Hash::make('password'),
-            'name'     => 'Administrator',
+            'name' => 'Administrator',
         ]);
+        $admin->assignRole($role);
 
-        \App\Models\User::create([
-            'email'    => 'javad.fathi@sarente.com',
+        $admin = factory(\App\Models\User::class)->create([
+            'email' => 'k1fathi33@gmail.com',
             'password' => \Illuminate\Support\Facades\Hash::make('pa$$w0rd'),
-            'name'     => 'Javad Fathi',
+            'name' => 'Javad Fathi',
         ]);
-
-
-
+        $admin->assignRole('admin');
     }
 }

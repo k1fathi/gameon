@@ -30,7 +30,7 @@ class User extends Authenticatable implements JWTSubject
     use HasRoles;
     use LogsActivity;
 
-    protected $guard_name = 'api';
+    //protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.
      * @var array
