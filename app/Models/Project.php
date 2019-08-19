@@ -67,12 +67,12 @@ class Project extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'project_user')->whereNotNull('is_claim');
+        return $this->belongsToMany(User::class, 'project_user')->where('is_claim',false);
     }
 
     public function claims()
     {
-        return $this->belongsToMany(User::class, 'project_user')->whereNull('is_claim');
+        return $this->belongsToMany(User::class, 'project_user')->where('is_claim',true);
     }
 
     public function rosettes()
