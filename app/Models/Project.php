@@ -66,12 +66,12 @@ class Project extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'project_user')->whereNull('is_claim');
+        return $this->belongsToMany(User::class, 'project_user')->where('is_claim', false);
     }
 
     public function claims()
     {
-        return $this->belongsToMany(User::class, 'project_user')->whereNotNull('is_claim');
+        return $this->belongsToMany(User::class, 'project_user')->where('is_claim', true);
     }
 
     public function rosettes()
@@ -151,7 +151,6 @@ class Project extends Model
 
         parent::creating(function (self $model) {
             if (is_null($model->id)) {
-                //$model->id = str_replace(".", "", microtime(true));
                 $model->id = abs(crc32(uniqid()));
             }
         });

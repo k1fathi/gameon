@@ -11,6 +11,8 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
+        //First of all add permission to db then create roles thus connect the permission to related role
+
         // Reset cached roles and permissions
         app()['cache']->forget('spatie.permission.cache');
 
