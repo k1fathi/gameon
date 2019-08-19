@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Request;
 use App\Models\Rosette;
 use App\Models\Image;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
-use Intervention\Image\ImageManagerStatic as Imaged;
+use App\Http\Requests\Api\RosetteRequest;
+use Illuminate\Support\Facades\Input;
 
 class RosetteController extends Controller
 {
@@ -16,17 +17,14 @@ class RosetteController extends Controller
      *
      * @return array
      */
-    public function index(Request $request)
+    public function index()
     {
-        $rosettes = Rosette::all();
-        $rosettes = $rosettes->map(function ($rosette) {
-            return [
-                'name' => $rosette->name,
-                'description' => $rosette->description
-            ];
-        });
+        $rosettes = Rosette::query();
 
-        return response()->success('common.success', $rosettes);
+        if (!$rosettes) {
+            return response()->error('error.not-found');
+        }
+        return response()->paginate($rosettes);
     }
 
     /**
@@ -36,34 +34,32 @@ class RosetteController extends Controller
      *
      * @return void
      */
-    public function store(Request $request)
+    public function store(RosetteRequest $request)
     {
         $rosette_name=$request->only('name');
         $rosette = Rosette::query()->whereTranslationLike('name',$rosette_name)->exists();
 
         if($rosette){
-            return response()->error('project.name-valid');
+            return response()->error('rosette.name-valid');
         }
 
-        $rosette = new Rosette();
-        $rosette->fill([
-            'name:'. App::getLocale()    => $request->name,
-            'description:'. App::getLocale() => $request->description,
-        ]);
-        $rosette->save();
+        try {
+            $rosette = new Rosette();
+            $rosette->fill([
+                'name:'. App::getLocale()    => $request->name,
+                'description:'. App::getLocale() => $request->description,
+            ]);
+            $rosette->save();
 
-        if ($request->hasFile('image')) {
-            $rosette->image()->save(new Image([
-                'image' => $request->file('image'),
-            ]));
+            if ($request->hasFile('image')) {
+                $rosette->image()->save(new Image([
+                    'image' => $request->file('image'),
+                ]));
+            }
+
+        } catch (\Exception $exception) {
+            return response()->error($exception->getMessage());
         }
-
-        if ($request->input('image_url')) {
-            $rosette->image()->save(new Image([
-                'image' => Imaged::make($request->input('image_url')),
-            ]));
-        }
-
 
         return response()->success('common.success');
     }
@@ -71,17 +67,20 @@ class RosetteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request\Api\RosetteRequest
      * @param  int      $id
      *
-     * @return void
+     * @return array
      */
-    public function update(Request $request, $id)
+    public function update(RosetteRequest $request, $id)
     {
-        $data = $request->all();
+        $rosette = Rosette::find($id);
 
-        $project = Rosette::findOrFail($id);
-        $project->update($data);
+        if (!$rosette) {
+            return response()->error('error.not-found');
+        }
+
+        $rosette->update($request->input());
 
         return response()->success('common.success');
     }
@@ -95,7 +94,12 @@ class RosetteController extends Controller
      */
     public function destroy($id)
     {
-        Rosette::destroy($id);
+        $rosette = Rosette::find($id);
+        if (!$rosette) {
+            return response()->error('error.not-found');
+        }
+
+        $rosette->delete();
 
         return response()->success('common.success');
     }
