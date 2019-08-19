@@ -47,6 +47,13 @@ class Setting extends Model
     const PERMISSION_PROJECT_UPDATE = 'project-update';
     const PERMISSION_PROJECT_DELETE = 'project-delete';
 
+    //Default Roles of project
+    const ROLE_PROJECT_OWNER = 'project-owner';
+    const ROLE_PROJECT_ADVISER = 'project-adviser';
+    const ROLE_PROJECT_LEADER = 'project-leader';
+    const ROLE_PROJECT_MEMBER = 'project-member';
+
+    //Default Roles of system
     const ROLE_STUDENT = 'student';
     const ROLE_TEACHER = 'teacher';
     const ROLE_ADMIN = 'admin';

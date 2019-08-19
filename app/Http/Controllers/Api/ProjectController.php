@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ProjectRequest;
+use App\Http\Requests\Request;
 use App\Models\Image;
 use App\Models\Permission;
 use App\Models\Setting;
@@ -59,20 +60,13 @@ class ProjectController extends Controller
                     'image' => $request->file('image'),
                 ]));
             }
-            $user->forgetCachedPermissions();
-            //Add permission to project creator
-            $user->givePermissionTo([
-                Setting::PERMISSION_PROJECT_ACCEPT . '-' . $project->id,
-                Setting::PERMISSION_PROJECT_DONE . '-' . $project->id,
-                Setting::PERMISSION_PROJECT_DELETE . '-' . $project->id,
-                Setting::PERMISSION_PROJECT_UPDATE . '-' . $project->id,
-            ]);
 
             $rosettes = Rosette::whereIn('id', $request->input('rosette_ids'))->get();
             if ($rosettes) {
                 $project->rosettes()->sync($rosettes);
             };
-            if ($user->hasRole('teacher')) {
+
+            if ($user->hasRole(Setting::ROLE_TEACHER)) {
 
                 $students = User::find($request->student_ids);
                 $project->members()->sync($students);

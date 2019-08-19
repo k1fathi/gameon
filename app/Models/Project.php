@@ -48,7 +48,6 @@ class Project extends Model
     ];
 
     protected $hidden = [
-        'created_at',
         'updated_at',
         'translations',
     ];
@@ -67,12 +66,12 @@ class Project extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'project_user')->whereNotNull('is_claim');
+        return $this->belongsToMany(User::class, 'project_user')->whereNull('is_claim');
     }
 
     public function claims()
     {
-        return $this->belongsToMany(User::class, 'project_user')->whereNull('is_claim');
+        return $this->belongsToMany(User::class, 'project_user')->whereNotNull('is_claim');
     }
 
     public function rosettes()
@@ -159,22 +158,23 @@ class Project extends Model
 
         static::created(function (self $model) {
 
-            Permission::create([
-                'name' => Setting::PERMISSION_PROJECT_ACCEPT . '-' . $model->id,
+            Role::create([
+                'name' => Setting::ROLE_PROJECT_OWNER . '-' . $model->id,
                 'guard_name' => Guard::getDefaultName($model),
             ]);
-            Permission::create([
-                'name' => Setting::PERMISSION_PROJECT_DONE . '-' . $model->id,
+            Role::create([
+                'name' => Setting::ROLE_PROJECT_ADVISER . '-' . $model->id,
                 'guard_name' => Guard::getDefaultName($model),
             ]);
-            Permission::create([
-                'name' => Setting::PERMISSION_PROJECT_UPDATE . '-' . $model->id,
+            Role::create([
+                'name' => Setting::ROLE_PROJECT_LEADER . '-' . $model->id,
                 'guard_name' => Guard::getDefaultName($model),
             ]);
-            Permission::create([
-                'name' => Setting::PERMISSION_PROJECT_DELETE . '-' . $model->id,
+            Role::create([
+                'name' => Setting::ROLE_PROJECT_MEMBER . '-' . $model->id,
                 'guard_name' => Guard::getDefaultName($model),
             ]);
+
         });
 
         static::deleting(function ($model) {
