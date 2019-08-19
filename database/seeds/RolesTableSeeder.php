@@ -18,7 +18,7 @@ class RolesTableSeeder extends Seeder
 
         \App\Models\Role::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'admin'
+            'name' => \App\Models\Setting::ROLE_ADMIN
         ]);
 
     }
