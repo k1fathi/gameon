@@ -2,36 +2,78 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Api\StepRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Step;
+use Illuminate\Support\Facades\App;
 
 class StepController extends Controller
 {
-    public function store(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return array
+     */
+    public function index($id)
     {
-        /** @var User $user */
-        $user = $request->user();
+        $project = Project::find($id);
 
-        $step_no=$request->only('name');
-        $step = Step::query()->whereTranslationLike('name',$step_no)->exists();
-
-        if($step){
-            return response()->error('project.name-valid');
+        if (!$project) {
+            return response()->error('error.not-found');
         }
 
-        $project = Project::find($request->project_id);
+        return response()->paginate($project->steps());
+    }
 
-        $step = new Step($request->input());
-        $project->steps()->save($step);
+    public function store(StepRequest $request, $id)
+    {
+        $project = Project::find($id);
+
+        if (!$project) {
+            return response()->error('error.not-found');
+        }
+
+        try {
+            $step = new Step(['step_no'=> $request->step_no]);
+            $step->fill([
+                'name:'. App::getLocale()    => $request->name,
+                'description:'. App::getLocale() => $request->description,
+            ]);
+            $project->steps()->save($step);
+
+        } catch (\Exception $exception) {
+            return response()->error($exception->getMessage());
+        }
+
+        return response()->success('common.success');
+    }
+
+    public function update(StepRequest $request, $id)
+    {
+        $step = Step::find($id);
+        if (!$step) {
+            return response()->error('error.not-found');
+        }
+
+        $step->fill([
+            'name:'. App::getLocale()    => $request->name,
+            'description:'. App::getLocale() => $request->description,
+        ]);
+
+        $step->save();
 
         return response()->success('common.success');
     }
 
     public function destroy($id)
     {
-        Step::destroy($id);
+        $step = Step::find($id);
+        if (!$step) {
+            return response()->error('error.not-found');
+        }
+
+        $step->delete();
 
         return response()->success('common.success');
     }
