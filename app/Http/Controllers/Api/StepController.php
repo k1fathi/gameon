@@ -56,12 +56,7 @@ class StepController extends Controller
             return response()->error('error.not-found');
         }
 
-        $step->fill([
-            'name:'. App::getLocale()    => $request->name,
-            'description:'. App::getLocale() => $request->description,
-        ]);
-
-        $step->save();
+        $step->update($request->input());
 
         return response()->success('common.success');
     }
