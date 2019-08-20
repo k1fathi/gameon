@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         //$role = app(\Spatie\Permission\PermissionRegistrar::class)->getRoleClass()::findByName('admin');
-        $role = \App\Models\Role::findByName('admin','web');
+        $role = \App\Models\Role::findByName(\App\Models\Setting::ROLE_ADMIN,'web');
 
         $admin = factory(\App\Models\User::class)->create([
             'email' => 'admin@sarente.com',

@@ -55,7 +55,7 @@ Route::post('image', function (Request $request) {
 
 
     if ($request->hasFile('image')) {
-        $image=new \App\Models\Image([
+        $image = new \App\Models\Image([
             'image' => $request->file('image'),
         ]);
         $image->save();

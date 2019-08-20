@@ -48,7 +48,6 @@ class Project extends Model
     ];
 
     protected $hidden = [
-        'created_at',
         'updated_at',
         'translations',
     ];
@@ -67,12 +66,12 @@ class Project extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'project_user')->where('is_claim',false);
+        return $this->belongsToMany(User::class, 'project_user')->where('is_claim', false);
     }
 
     public function claims()
     {
-        return $this->belongsToMany(User::class, 'project_user')->where('is_claim',true);
+        return $this->belongsToMany(User::class, 'project_user')->where('is_claim', true);
     }
 
     public function rosettes()
@@ -152,29 +151,29 @@ class Project extends Model
 
         parent::creating(function (self $model) {
             if (is_null($model->id)) {
-                //$model->id = str_replace(".", "", microtime(true));
                 $model->id = abs(crc32(uniqid()));
             }
         });
 
         static::created(function (self $model) {
 
-            Permission::create([
-                'name' => Setting::PERMISSION_PROJECT_ACCEPT . '-' . $model->id,
+            Role::create([
+                'name' => Setting::ROLE_PROJECT_OWNER . '-' . $model->id,
                 'guard_name' => Guard::getDefaultName($model),
             ]);
-            Permission::create([
-                'name' => Setting::PERMISSION_PROJECT_DONE . '-' . $model->id,
+            Role::create([
+                'name' => Setting::ROLE_PROJECT_ADVISER . '-' . $model->id,
                 'guard_name' => Guard::getDefaultName($model),
             ]);
-            Permission::create([
-                'name' => Setting::PERMISSION_PROJECT_UPDATE . '-' . $model->id,
+            Role::create([
+                'name' => Setting::ROLE_PROJECT_LEADER . '-' . $model->id,
                 'guard_name' => Guard::getDefaultName($model),
             ]);
-            Permission::create([
-                'name' => Setting::PERMISSION_PROJECT_DELETE . '-' . $model->id,
+            Role::create([
+                'name' => Setting::ROLE_PROJECT_MEMBER . '-' . $model->id,
                 'guard_name' => Guard::getDefaultName($model),
             ]);
+
         });
 
         static::deleting(function ($model) {

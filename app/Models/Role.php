@@ -27,6 +27,18 @@ class Role extends Model implements \Spatie\Permission\Contracts\Role
         'name',
         'guard_name'
     ];
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $attributes = $this->attributesToArray();
+        $attributes = array_merge($attributes, $this->relationsToArray());
+        unset($attributes['pivot']['created_at']);
+        return $attributes;
+    }
 
     /**
      * Change activity log event description
@@ -55,7 +67,7 @@ class Role extends Model implements \Spatie\Permission\Contracts\Role
      */
     public static function findByName(string $name, $guardName): \Spatie\Permission\Contracts\Role
     {
-        return app(\Spatie\Permission\PermissionRegistrar::class)->getRoleClass()::findByName( $name, $guardName);
+        return app(\Spatie\Permission\PermissionRegistrar::class)->getRoleClass()::findByName($name, $guardName);
     }
 
     /**

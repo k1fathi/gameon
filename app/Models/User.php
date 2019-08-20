@@ -84,9 +84,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->morphOne(Image::class, 'imageable');
     }
 
+
     public static function getUrl($roleName = null)
     {
-
         $url = '';
         $urlStr = '_url';
 
