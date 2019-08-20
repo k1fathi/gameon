@@ -70,10 +70,14 @@ class ProjectController extends Controller
             if ($user->hasRole(Setting::ROLE_TEACHER)) {
 
                 $students = User::find($request->student_ids);
-                $project->members()->sync($students);
+                foreach ($students as $student){
+                    $project->members()->save($student, ['is_claim'=> false]);
+                }
 
                 $teachers = User::find($request->teacher_ids);
-                $project->members()->saveMany($teachers);
+                foreach ($teachers as $teacher){
+                    $project->members()->save($teacher, ['is_claim'=> false]);
+                }
 
 //            foreach ($teachers as $teacher) {
 //                $teacher->givePermissionTo([
@@ -103,7 +107,12 @@ class ProjectController extends Controller
             return response()->error('error.not-found');
         }
 
-        return response()->success($project->load(['members', 'rosettes', 'steps', 'image']));
+        $project = $project->load(['claims', 'members', 'rosettes', 'steps', 'image'])
+            ->load(['members.roles' => function ($role){
+            $role->where('name', 'teacher')->orWhere('name', 'student')->select('name');
+        }]);
+
+        return response()->success($project);
     }
 
     /**

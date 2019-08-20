@@ -47,6 +47,29 @@ class Setting extends Model
     const PERMISSION_PROJECT_UPDATE = 'project-update';
     const PERMISSION_PROJECT_DELETE = 'project-delete';
 
+    const PERMISSION_ROSETTE_CREATE = 'rosette-create';
+    const PERMISSION_ROSETTE_DELETE = 'rosette-delete';
+    const PERMISSION_ROSETTE_UPDATE = 'rosette-update';
+    const PERMISSION_ROSETTE_ATTACH = 'rosette-attach';
+    const PERMISSION_ROSETTE_DETACH = 'rosette-detach';
+    const PERMISSION_ROSETTE_HOLD = 'rosette-hold';
+
+    const PERMISSION_STEP_CREATE = 'rosette-create';
+    const PERMISSION_STEP_DELETE = 'rosette-delete';
+    const PERMISSION_STEP_UPDATE = 'rosette-update';
+    const PERMISSION_STEP_DONE = 'rosette-done';
+
+    const PERMISSION_CLUB_CREATE = 'club-create';
+    const PERMISSION_CLUB_DELETE = 'club-delete';
+    const PERMISSION_CLUB_UPDATE = 'club-update';
+
+    const PERMISSION_QUESTION_CREATE = 'question-create';
+    const PERMISSION_QUESTION_DELETE = 'question-delete';
+    const PERMISSION_QUESTION_UPDATE = 'question-update';
+
+    const PERMISSION_CLAIM_ACCEPT = 'claim-accept';
+    const PERMISSION_FEED_ADD = 'feed-add';
+
     //Default Roles of project
     const ROLE_PROJECT_OWNER = 'project-owner';
     const ROLE_PROJECT_ADVISER = 'project-adviser';

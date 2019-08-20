@@ -27,17 +27,28 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 Route::group(['middleware' => 'auth:api'], function ($router) {
 
-    Route::get('user', function (Request $request) {
-        return $request->user()->with('roles')->first();
-    });
+    Route::resource('user', 'Api\UserController');
 
     //Projects store
     Route::resource('project', 'Api\ProjectController');
 
     //Project step store
-    Route::resource('step', 'Api\StepController');
+    Route::post('project/{project}/step', 'Api\StepController@store');
+
+    //Get project steps
+    Route::get('project/{project}/step', 'Api\StepController@index');
+
+    //Update project step
+    Route::post('step/{step}', 'Api\StepController@update');
+
+    //Delete project step
+    Route::delete('step/{step}', 'Api\StepController@destroy');
 
     Route::resource('rosette', 'Api\RosetteController');
+
+    Route::resource('role', 'Api\RoleController');
+
+    Route::resource('permission', 'Api\PermissionController');
 
     //Sorucevap, random soru al
     Route::get('question/get', 'Api\QuestionController@getQuestion');

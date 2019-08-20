@@ -42,6 +42,10 @@ return [
     'project'      => [
         'not-found' => 'Project not found.',
         'name-valid' => 'Name is valid',
+    ],
+    'rosette'     =>  [
+        'not-found' => 'Rosette not found.',
+        'name-valid' => 'Name is valid'
     ]
 
 ];
