@@ -26,7 +26,7 @@ class ProjectController extends Controller
         $projects = Project::with('steps', 'rosettes', 'members', 'claims', 'image')
             ->with(['members.roles' => function ($role) {
                 $role->where('name', 'teacher')->orWhere('name', 'student')->select('name');
-            }]);
+            }])->latest('created_at');
 
         if (!$projects) {
             return response()->error('error.not-found');
