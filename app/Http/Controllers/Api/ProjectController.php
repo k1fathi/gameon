@@ -102,7 +102,12 @@ class ProjectController extends Controller
             return response()->error('error.not-found');
         }
 
-        return response()->success($project->load(['members', 'rosettes', 'steps', 'image']));
+        $project = $project->load(['claims', 'members', 'rosettes', 'steps', 'image'])
+            ->load(['members.roles' => function ($role){
+            $role->where('name', 'teacher')->orWhere('name', 'student')->select('name');
+        }]);
+
+        return response()->success($project);
     }
 
     /**
