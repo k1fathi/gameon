@@ -16,107 +16,112 @@ class PermissionsTableSeeder extends Seeder
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'project-create'
+            'name' => \App\Models\Setting::PERMISSION_PROJECT_CREATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'project-update'
+            'name' => \App\Models\Setting::PERMISSION_PROJECT_UPDATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'project-delete'
+            'name' => \App\Models\Setting::PERMISSION_PROJECT_DELETE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'project-done'
+            'name' => \App\Models\Setting::PERMISSION_PROJECT_DONE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'rosette-attach'
+            'name' => \App\Models\Setting::PERMISSION_ROSETTE_ATTACH
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'rosette-detach'
+            'name' => \App\Models\Setting::PERMISSION_ROSETTE_DETACH
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'step-add'
+            'name' => \App\Models\Setting::PERMISSION_STEP_CREATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'step-done'
+            'name' => \App\Models\Setting::PERMISSION_STEP_DELETE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'step-remove'
+            'name' => \App\Models\Setting::PERMISSION_STEP_DONE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'claim-accept'
+            'name' => \App\Models\Setting::PERMISSION_STEP_UPDATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'feed-add'
+            'name' => \App\Models\Setting::PERMISSION_CLAIM_ACCEPT
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'rosette-hold'
+            'name' => \App\Models\Setting::PERMISSION_FEED_ADD
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'rosette-create'
+            'name' => \App\Models\Setting::PERMISSION_ROSETTE_HOLD
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'rosette-delete'
+            'name' => \App\Models\Setting::PERMISSION_ROSETTE_CREATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'rosette_update'
+            'name' => \App\Models\Setting::PERMISSION_ROSETTE_DELETE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'club-create'
+            'name' => \App\Models\Setting::PERMISSION_ROSETTE_UPDATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'club-update'
+            'name' => \App\Models\Setting::PERMISSION_CLUB_CREATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'club-delete'
+            'name' => \App\Models\Setting::PERMISSION_CLUB_DELETE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'question_create'
+            'name' => \App\Models\Setting::PERMISSION_CLUB_UPDATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'question_delete'
+            'name' => \App\Models\Setting::PERMISSION_QUESTION_CREATE
         ]);
 
         \App\Models\Permission::create([
             'guard_name' => config('auth.defaults.guard'),
-            'name' => 'question_update'
+            'name' => \App\Models\Setting::PERMISSION_QUESTION_DELETE
+        ]);
+
+        \App\Models\Permission::create([
+            'guard_name' => config('auth.defaults.guard'),
+            'name' => \App\Models\Setting::PERMISSION_QUESTION_UPDATE
         ]);
     }
 }
