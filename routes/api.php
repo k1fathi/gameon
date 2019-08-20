@@ -27,9 +27,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 Route::group(['middleware' => 'auth:api'], function ($router) {
 
-    Route::get('user', function (Request $request) {
-        return $request->user()->with('roles')->first();
-    });
+    Route::resource('user', 'Api\UserController');
 
     //Projects store
     Route::resource('project', 'Api\ProjectController');
@@ -47,6 +45,10 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::delete('step/{step}', 'Api\StepController@destroy');
 
     Route::resource('rosette', 'Api\RosetteController');
+
+    Route::resource('role', 'Api\RoleController');
+
+    Route::resource('permission', 'Api\PermissionController');
 
     //Sorucevap, random soru al
     Route::get('question/get', 'Api\QuestionController@getQuestion');
